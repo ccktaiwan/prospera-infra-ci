@@ -1,0 +1,270 @@
+# ProsperaGen Skills 總索引
+## Document Header
+- Document Type: Codex
+- Version: v1.0
+- Status: Approved
+- Owner: prospera-ci-shared/skills/
+- Governing Authority: prospera-engineering-codex v1.0
+- DNA Reference: 要素一～十（全部）
+- Last Updated: 2026-05-19
+
+---
+
+## 1. Identity & Scope
+
+Skills 是 ProsperaGen Engineering DNA 的執行觸發器。
+不是新規則，是 DNA 十個要素的操作化介面。
+
+**MUST：** 任何 AI 執行任何任務前，先查 §3 查閱表，讀完對應 Skill 才開始執行。
+**MUST NOT：** 不讀 Skill 直接執行 = Governance Breach → CI 自動 BLOCK。
+
+---
+
+## 2. Non-Goals
+
+- 不取代 DNA（DNA 是規則定義，Skills 是執行介面）
+- 不包含架構決策（→ Prospera OS）
+- 不包含產品邏輯（→ 各自 repo）
+
+---
+
+## 3. Skill 查閱表
+
+| Skill | 觸發條件 | 主要解決問題 | DNA 要素 | 位置 |
+|-------|---------|------------|---------|------|
+| SKILL-01 | 任何 .yml 寫入或修改前 | YAML syntax error、PS 語法污染 | 要素四、五 | 本文件 §5 |
+| SKILL-02 | 任何目錄建立或 git mv 前 | 大小寫衝突、目錄命名混亂 | 要素六 | 本文件 §6 |
+| SKILL-03 | 任何 token/PAT/secret 操作前 | PAT 失蹤、secret 設定不一致 | 要素八 | SKILL-03.md |
+| SKILL-04 | 任何 git commit 前 | CI 失敗、Header 缺失、格式錯 | 要素四、九 | 本文件 §7 |
+| SKILL-05 | 每次任務開始前 + 每個 Stage 完成後 | Governance Drift、語義漂移 | 要素一、二、五 | SKILL-05.md |
+| SKILL-06 | 多步驟任務每完成一個重要步驟後 | 任務中斷失憶、誤刪 artifacts | 要素八 J 點 | SKILL-06.md |
+| SKILL-07 | 任何文件提交前 | 文件深度不足、無法工程實作 | 要素三、五、七 | SKILL-07.md |
+| SKILL-08 | 每個新機制或新引擎建立後 | IP 未登記、核心邏輯外洩 | 要素十 | SKILL-08.md |
+
+---
+
+## 4. 標準任務流程
+
+```
+[開始任務]
+    ↓
+讀 SKILL.md §3 → 找對應 Skill → 讀完
+    ↓
+確認 Phase (0-6) + Stage (1-6)        ← SKILL-05
+    ↓
+執行任務
+    ↓
+每完成重要步驟 → Checkpoint            ← SKILL-06
+    ↓
+git commit 前 → Pre-flight            ← SKILL-04
+    ↓
+新錯誤 → 補進 known_failures.md
+```
+
+---
+
+## 5. SKILL-01｜YAML Workflow Guard
+
+**DNA：要素四（Commit 四標準）+ 要素五（可工程實作）**
+**觸發：** 任何 `.github/workflows/*.yml` 寫入或修改前
+
+### 5.1 禁止事項（MUST NOT）
+
+```
+❌ PowerShell 多行註解
+<#  任何內容  #>
+
+❌ on: push 但 jobs 為空（造成 parse error）
+
+❌ 未使用 yamllint 驗證就直接 commit
+```
+
+### 5.2 停用 Workflow 標準模板
+
+```yaml
+# DISABLED [日期] - [原因，例如：unified under prospera_guard.yml]
+name: [原名稱] (Disabled)
+on:
+  workflow_dispatch:
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This workflow is disabled"
+```
+
+### 5.3 執行前驗證步驟（依序，失敗即停）
+
+```
+Step 1｜檢查 <# 字串
+  grep -n "<#" .github/workflows/*.yml
+  → 有 → 換成停用模板，不得保留
+
+Step 2｜yamllint 驗證
+  yamllint .github/workflows/[檔名].yml
+  → errors > 0 → 修完再 commit
+
+Step 3｜確認 trigger 與 jobs 邏輯一致
+  → on: push 但 jobs 空 → 補 disabled stub 或真實 job
+```
+
+### 5.4 已知錯誤快查
+
+| 症狀 | 根本原因 | 標準修法 |
+|------|---------|---------|
+| CI Fail line 4/6 syntax error | `<#` PowerShell 語法 | 換成停用模板 |
+| `mapping values are not allowed` | YAML 縮排錯誤 | yamllint 定位修正 |
+| `could not find expected ':'` | 冒號後缺空格 | 全文搜尋補空格 |
+| `Input required and not supplied: token` | Secret 未設定 | 見 SKILL-03 |
+
+---
+
+## 6. SKILL-02｜Directory Structure Guard
+
+**DNA：要素六（Repo 六種類型 + 目錄結構）**
+**觸發：** 任何目錄建立、重命名、或 `git mv` 前
+
+### 6.1 命名規則（MUST）
+
+```
+目錄名稱：全部小寫
+  ✅ 00_governance / 01_docs / 02_kernel
+  ❌ 00_GOVERNANCE / 01_Docs / 02_KERNEL
+
+檔案名稱：全部大寫（含底線）
+  ✅ GOVERNANCE_STATUS.md / README.md
+  ❌ governance_status.md / readme.md
+```
+
+### 6.2 Platform Repo 標準目錄（硬編碼，不得自行推斷）
+
+```
+00_governance/     ← constitution.md、authority-matrix.md
+01_docs/
+02_kernel/         ← 核心邏輯 + 可執行程式碼
+03_engines/
+04_workflows/
+05_products/
+06_memory/
+07_data/
+08_tools/
+09_ip/
+10_archive/
+11_tests/
+99_archive/        ← 待清理封存
+```
+
+### 6.3 Windows Case-Only Rename 三步走（MUST）
+
+```bash
+# 情境：00_GOVERNANCE → 00_governance
+# 直接 git mv 在 Windows NTFS 會失敗，必須三步：
+
+# Step 1：衝突檔案先撤出
+git mv 00_governance/FILE.md _FILE.tmp
+
+# Step 2：大寫改中性暫名
+git mv 00_GOVERNANCE _gov_tmp
+
+# Step 3：暫名改目標小寫
+git mv _gov_tmp 00_governance
+
+# Step 4：撤出的檔案放回
+git mv _FILE.tmp 00_governance/FILE.md
+
+git commit -m "fix: normalize dir to lowercase"
+```
+
+### 6.4 衝突掃描指令
+
+```bash
+cd /c/AI_WorkDir/GitHub && for d in */; do
+  d="${d%/}"
+  cd "/c/AI_WorkDir/GitHub/$d" 2>/dev/null || continue
+  [ -d .git ] || continue
+  variants=$(git ls-files | grep -iE '^00_governance/' \
+    | awk -F'/' '{print $1}' | sort -u | tr '\n' '|')
+  [ -n "$variants" ] && echo "CONFLICT: $d → $variants"
+  cd ..
+done
+```
+
+---
+
+## 7. SKILL-04｜Commit Pre-flight
+
+**DNA：要素四（Commit 四標準）+ 要素九（AI Header）**
+**觸發：** 任何 `git commit` 前，無例外
+
+### 7.1 Pre-flight 清單（依序，任一失敗即停止）
+
+```
+□ Step 1｜語法驗證
+  Python：python -m py_compile [file]
+  YAML：  yamllint [file]
+  → 失敗 → 修完再繼續
+
+□ Step 2｜AI Header 完整
+  必要欄位：Generated / Model / Phase / Layer /
+            Target Repo / Governing Codex / Human-Reviewed
+  → 缺欄位 → 補完再繼續
+
+□ Step 3｜Commit Message 格式
+  格式：[Phase][Layer] 動作: 描述 (為什麼)
+  範例：[P3][L2] feat: add authority-matrix (enforce access boundary)
+  長度：≤ 72 字元
+  禁用動詞：update / fix / change / misc / WIP
+  → 格式錯 → 重寫
+
+□ Step 4｜Extended Description 存在
+  必須包含：系統角色 / 影響範圍 / 關聯 Issue / Human-Reviewed 狀態
+  → 空白 → 補完
+
+□ Step 5｜Path & Filename 正確
+  目錄小寫、檔案大寫
+  → 不符 → 改正
+```
+
+### 7.2 AI Header 標準模板
+
+```
+# ══════════════════════════════════════
+# AI-GENERATED DOCUMENT
+# ══════════════════════════════════════
+# Generated:        [ISO 8601 timestamp]
+# Model:            [model name + version]
+# Phase:            [Phase 0-6]
+# Layer:            [L1-L5 or ProsperaGen]
+# Target Repo:      [repo name]
+# Governing Codex:  prospera-engineering-codex v1.0
+# Human-Reviewed:   [YES / NO / PENDING]
+# Review By:        [reviewer name or PENDING]
+# Review Date:      [ISO 8601 or PENDING]
+# ══════════════════════════════════════
+```
+
+### 7.3 成功標準
+
+全部 5 個 Step 通過 → 允許 commit
+任何 Step 失敗 → 停止，修完，重跑 Pre-flight
+
+---
+
+## 8. known_failures.md 使用規則
+
+CI 失敗時：
+1. 先查 `known_failures.md`
+2. 找到 → 直接套標準修法，不試錯
+3. 找不到 → 允許試錯 → 成功後必須補進 known_failures.md
+
+---
+
+## 9. Skill 更新規則
+
+- 人工更新：需 J2 Review + commit message 標註 `[SKILL-UPDATE]`
+- AI 不可自行修改 Skill 文件
+- 每次更新需同步更新 Version 和 Last Updated
+
+---
+
+*v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
