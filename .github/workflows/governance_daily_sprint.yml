@@ -60,3 +60,19 @@ jobs:
             echo "- Triggered: $TS"
             echo "- Dry run: ${{ inputs.dry_run || 'false' }}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Send completion notification
+        uses: dawidd6/action-send-mail@v3
+        if: always()
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.NOTIFY_EMAIL }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
+          subject: "Prospera OS Daily Sprint - ${{ job.status }}"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: Prospera OS
+          body: |
+            Sprint 完成時間：${{ github.run_id }}
+            狀態：${{ job.status }}
+            查看詳情：https://github.com/ccktaiwan/${{ github.repository }}/actions
