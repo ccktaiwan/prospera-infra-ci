@@ -1,0 +1,62 @@
+---
+# yamllint disable rule:truthy
+name: Governance Daily Sprint
+"on":
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no side effects)'
+        required: false
+        default: 'false'
+        type: string
+
+jobs:
+  daily-sprint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout prospera-ci-shared
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
+
+      - name: Checkout prospera-monitoring-agent
+        uses: actions/checkout@v4
+        with:
+          repository: ccktaiwan/prospera-monitoring-agent
+          token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
+          path: prospera-monitoring-agent
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -q requests
+
+      - name: Run auto_remediation
+        env:
+          GITHUB_REPO: ccktaiwan/prospera-monitoring-agent
+          PROSPERA_MCP_TOKEN: ${{ secrets.PROSPERA_MCP_TOKEN }}
+          LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          NOTIFY_EMAIL_TO: ${{ secrets.NOTIFY_EMAIL_TO }}
+        run: |
+          cd prospera-monitoring-agent
+          DRY_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_FLAG="--dry-run"
+          fi
+          python 02_kernel/auto_remediation.py $DRY_FLAG
+
+      - name: Summary
+        run: |
+          TS=$(date -u '+%Y-%m-%d %H:%M UTC')
+          {
+            echo "## Governance Daily Sprint Complete"
+            echo "- Triggered: $TS"
+            echo "- Dry run: ${{ inputs.dry_run || 'false' }}"
+          } >> "$GITHUB_STEP_SUMMARY"
