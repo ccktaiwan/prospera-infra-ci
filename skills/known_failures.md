@@ -213,9 +213,7 @@ CI 失敗時：
   import os
   from pathlib import Path
 
-  # 取代硬編碼路徑
   BASE = Path(os.environ.get("PROSPERA_AUDIT_PATH", Path(__file__).parent.parent))
-  # LOG_PATH 改用 __file__ 相對路徑
   LOG_PATH = Path(__file__).parent.parent / "reports" / "governance_logs.jsonl"
   ```
 - 首次發現：2026-05-20
