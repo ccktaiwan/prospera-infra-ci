@@ -223,4 +223,25 @@ CI 失敗時：
 
 ---
 
+## KF-009｜GatewayStateMachine 方法名稱與測試預期不符
+
+- 症狀：`'GatewayStateMachine' object has no attribute 'transition'`
+- 根本原因：state_machine.py 使用具體方法名稱（`receive_request`, `auth_success`, `route_resolved`, `execution_done`, `response_sent`, `fail`, `reset`），測試誤用通用 `transition()` 方法
+- 影響 Repo：prospera-api-gateway
+- 標準修法：
+  ```python
+  # 讀 state_machine.py 確認實際方法名稱後更新 test
+  sm.receive_request("req-001")  # IDLE → AUTHENTICATING
+  sm.auth_success("tenant-id")   # AUTHENTICATING → ROUTING
+  sm.route_resolved()             # ROUTING → EXECUTING
+  sm.execution_done()             # EXECUTING → RESPONDING
+  sm.response_sent()              # RESPONDING → COMPLETED
+  sm.reset()                      # COMPLETED → IDLE
+  sm.fail()                       # any stage → ERROR
+  ```
+- 首次發現：2026-05-21
+- DNA 要素：要素五（可工程實作）
+
+---
+
 *v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Append-only*
