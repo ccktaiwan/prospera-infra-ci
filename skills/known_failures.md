@@ -179,4 +179,28 @@ CI 失敗時：
 
 ---
 
+## KF-007｜Dashboard daily schedule 與治理 CI 衝突
+
+- 症狀：prospera-governance-dashboard CI 100% Fail（daily-report workflow 定時觸發失敗）
+- 根本原因：`daily-report.yml` 含 `schedule: cron` trigger，定時與治理 CI 同時執行衝突，且 `dashboard_server.py --health-check` 在 Ubuntu CI 環境無法執行（有 Windows 硬編碼路徑 + FastAPI 依賴）
+- 影響 Repo：prospera-governance-dashboard
+- 標準修法：
+  ```yaml
+  # 把 on: 區塊從 schedule+workflow_dispatch 改為只有 workflow_dispatch
+  on:
+    workflow_dispatch:
+  # 移除：
+  # schedule:
+  #   - cron: '30 1 * * *'
+  ```
+  ```powershell
+  git add .github/workflows/daily-report.yml
+  git commit -m "[P1][CI] fix: remove schedule trigger prevent governance conflict (manual only)"
+  git push
+  ```
+- 首次發現：2026-05-20
+- DNA 要素：要素四（Commit 四標準）
+
+---
+
 *v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Append-only*
