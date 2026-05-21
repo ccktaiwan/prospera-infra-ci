@@ -1,7 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 ## Document Header
 - Document Type: Codex
-- Version: v1.2
+- Version: v1.3
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
@@ -119,6 +119,7 @@ Starting From:    [從哪個步驟繼續]
 | v1.0 | 2026-05-19 | 初版發布 |
 | v1.1 | 2026-05-20 | 新增 §7 CI-Fail-First（KF-007）、§8 RESTART DECLARATION 快查 |
 | v1.2 | 2026-05-21 | 新增 §10 限流自動處理、§11 CI 觸發後不用 sleep 等待 |
+| v1.3 | 2026-05-21 | 新增 §12 指令必須單一完整區塊 |
 
 ---
 
@@ -146,4 +147,18 @@ Starting From:    [從哪個步驟繼續]
 
 ---
 
-*v1.2 · 2026-05-21 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+## 12. 指令必須單一完整區塊（Single-Block Instruction Rule）
+
+**MUST：** 所有給 Claude Code 執行的指令，必須是單一完整的程式碼區塊。
+**MUST NOT：** 不可分段貼入（分段 = 需要人工判斷順序 = 違反自動化治理哲學）。
+
+```
+✅ 正確：從第一行到 Write-Host "[DONE]" 一次完整貼入
+❌ 錯誤：分成多個訊息分段貼入指令
+```
+
+**原因：** 分段 = 增加人工介入 = 違反「AI 治理的摩擦最小化」核心哲學。
+
+---
+
+*v1.3 · 2026-05-21 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
