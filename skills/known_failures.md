@@ -221,24 +221,124 @@ CI 失敗時：
 
 ---
 
-## KF-009｜GatewayStateMachine 方法名稱與測試預期不符
+## KF-009｜SYSTEM_INDEX.md 缺失（Codex Validation STRUCTURAL_WARNING）
 
-- 症狀：`'GatewayStateMachine' object has no attribute 'transition'`
-- 根本原因：state_machine.py 使用具體方法名稱（`receive_request`, `auth_success`, `route_resolved`, `execution_done`, `response_sent`, `fail`, `reset`），測試誤用通用 `transition()` 方法
-- 影響 Repo：prospera-api-gateway
+- 症狀：governance_validation_v2.yml 輸出 `[STRUCTURAL_WARNING] SYSTEM_INDEX.md missing`，CI exit 1
+- 根本原因：SYSTEM_INDEX.md 是 Codex Validation 的強制存在檔案，缺失即觸發 STRUCTURAL_WARNING
+- 影響 Repo：prospera-ci-shared、prospera-identity-authority、任何需通過 Three-Class Validation 的 repo
+- 標準修法：在 repo root 建立 SYSTEM_INDEX.md，內容索引所有 governance docs + kernel modules
+  ```bash
+  # 最小合法 SYSTEM_INDEX.md
+  echo "# SYSTEM_INDEX\n## Governance Entry Point\nSee AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
+  git add SYSTEM_INDEX.md
+  git commit -m "fix(governance): add SYSTEM_INDEX.md — resolve STRUCTURAL_WARNING"
+  git push
+  ```
+- 首次發現：2026-05-21
+- DNA 要素：要素六（Repo 結構）
+
+---
+
+## KF-010｜Gmail App Password 被拒（SMTP auth failed）
+
+- 症狀：dawidd6/action-send-mail@v3 失敗，`Invalid login`，GitHub Actions log 顯示 `535-5.7.8`
+- 根本原因：1) App Password 產生後未立即設定 Secret（舊密碼過期）2) SMTP port 選錯（465 SSL vs 587 STARTTLS）
+- 影響 Repo：prospera-ci-shared（governance_daily_sprint.yml）
 - 標準修法：
-  ```python
-  # 讀 state_machine.py 確認實際方法名稱後更新 test
-  sm.receive_request("req-001")  # IDLE → AUTHENTICATING
-  sm.auth_success("tenant-id")   # AUTHENTICATING → ROUTING
-  sm.route_resolved()             # ROUTING → EXECUTING
-  sm.execution_done()             # EXECUTING → RESPONDING
-  sm.response_sent()              # RESPONDING → COMPLETED
-  sm.reset()                      # COMPLETED → IDLE
-  sm.fail()                       # any stage → ERROR
+  1. Gmail → Google Account → Security → App Passwords → 建立新密碼（Prospera OS）
+  2. `gh secret set NOTIFY_EMAIL_PASSWORD --repo ccktaiwan/prospera-ci-shared --body "16碼密碼"`
+  3. 確認 workflow 使用 `server_port: 587` + `secure: false`（STARTTLS，不是 465 SSL）
+- 首次發現：2026-05-21
+- DNA 要素：要素八（AI 協作協議）
+
+---
+
+## KF-011｜Private repo checkout 失敗（PROSPERA_DASHBOARD_TOKEN 未設定）
+
+- 症狀：`Input required and not supplied: token` 或 checkout 步驟 ✗，CI exit 1
+- 根本原因：引用其他 private repo（如 prospera-monitoring-agent）的 workflow 需要 PAT，但 Secret 未設定
+- 影響 Repo：prospera-ci-shared（governance_daily_sprint.yml 的 second checkout）
+- 標準修法：
+  ```bash
+  # 從 gh CLI 取得當前 token 直接設定（不需找存檔）
+  gh auth token | gh secret set PROSPERA_DASHBOARD_TOKEN --repo ccktaiwan/prospera-ci-shared
+  ```
+  注意：self-checkout（checkout 自己的 repo）不需要 token，用預設 GITHUB_TOKEN 即可。
+- 首次發現：2026-05-21
+- DNA 要素：要素八（AI 協作協議）
+
+---
+
+## KF-012｜write_skills.py 執行後覆蓋手動修改的 SKILL-CORE.md
+
+- 症狀：更新 SKILL-CORE.md 後執行 write_skills.py，發現檔案被覆蓋回舊版本
+- 根本原因：write_skills.py 是 canonical source，所有 skill 內容硬編碼在 Python 字串中。執行 script = 從 Python 覆蓋到 GitHub + OneDrive。應先改 script 再跑
+- 影響 Repo：prospera-ci-shared（skills/SKILL-CORE.md）
+- 標準修法：
+  1. 先修改 `scripts/write_skills.py` 中對應的 content 字串
+  2. 再執行 `python scripts/write_skills.py`（sync 到兩個位置）
+  3. 才 git add + commit + push
+  順序：改 Python → 跑 script → commit — 不可反過來
+- 首次發現：2026-05-21
+- DNA 要素：要素五（可工程實作）
+
+---
+
+## KF-013｜Windows CRLF 行尾 → yamllint 失敗
+
+- 症狀：yamllint 輸出 `wrong indentation` 或 `unexpected end of file`，本地 git show 正常，但 CI 失敗
+- 根本原因：Windows 環境下 Out-File 預設 CRLF 行尾，yamllint 在 Linux CI 上對 CRLF 敏感
+- 影響 Repo：所有在 Windows 上建立 .yml 的 repo
+- 標準修法：
+  ```bash
+  sed -i 's/\r//' .github/workflows/[file].yml
+  # 或確認 .gitattributes 有：
+  # *.yml text eol=lf
+  ```
+  使用 Bash Write tool 建立 YAML（不用 PowerShell Out-File）可避免此問題。
+- 首次發現：2026-05-21
+- DNA 要素：要素四（Commit 四標準）
+
+---
+
+## KF-014｜sleep 指令被 Claude Code 封鎖
+
+- 症狀：執行 `sleep 35 && gh run view [id]` 時 Claude Code 環境封鎖 sleep，任務中斷
+- 根本原因：Claude Code Bash 工具對長時間 sleep 有限制，不允許超過閾值的 blocking sleep
+- 影響 Repo：所有需要等待 CI 結果的操作
+- 標準修法：
+  ```bash
+  # ❌ 錯誤
+  sleep 35 && gh run view 12345 --repo owner/repo
+  # ✅ 正確：阻塞直到 CI 完成
+  gh run watch 12345 --repo owner/repo --exit-status
+  # ✅ 或分兩步：先觸發，後續 Sprint 再查
+  gh workflow run workflow.yml --repo owner/repo
+  # 下次對話再執行：
+  gh run list --repo owner/repo --limit 1
   ```
 - 首次發現：2026-05-21
 - DNA 要素：要素五（可工程實作）
+
+---
+
+## KF-015｜push rejected — fetch first（遠端有新 commit）
+
+- 症狀：`git push` 失敗，`error: failed to push some refs`，`hint: Updates were rejected because the remote contains work`
+- 根本原因：在 push 前沒有 pull 遠端最新 commit，push 時衝突
+- 影響 Repo：多人協作或多個 Agent 同時操作的 repo
+- 標準修法：
+  ```bash
+  git pull --rebase origin main
+  git push origin main
+  # 如果有 stash：
+  git stash
+  git pull --rebase origin main
+  git stash pop
+  git push origin main
+  ```
+- 首次發現：2026-05-21
+- DNA 要素：要素四（Commit 四標準）
 
 ---
 
