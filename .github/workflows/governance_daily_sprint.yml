@@ -64,8 +64,8 @@ jobs:
         if: always()
         with:
           server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
+          server_port: 587
+          secure: false
           username: ${{ secrets.NOTIFY_EMAIL }}
           password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
           subject: "Prospera OS Daily Sprint - ${{ job.status }}"
