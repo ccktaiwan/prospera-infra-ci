@@ -342,4 +342,20 @@ CI 失敗時：
 
 ---
 
+## KF-016｜Anthropic API key 放進 .env 造成意外計費
+
+- 症狀：platform.claude.com 出現非預期費用（$40-$100/天）
+- 根本原因：agent 測試時把 API key 存進 .env 和 Windows 系統環境變數，Python 腳本大量呼叫 Anthropic API
+- 影響 Repo：prospera-os（consulting_agent 測試期間，3 天花費 $94.48）
+- 標準修法：
+  1. platform.claude.com → API keys → 刪除問題 key
+  2. `[System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $null, "User")`
+  3. 清除 .env 中的 ANTHROPIC_API_KEY
+  4. Spend limit 調降到 $20 止血
+- 預防：見 SKILL-CORE §13（API Key 使用規則）
+- 首次發現：2026-05-21
+- DNA 要素：要素八（Secret 管理）
+
+---
+
 *v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Append-only*
