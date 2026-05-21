@@ -229,7 +229,9 @@ CI 失敗時：
 - 標準修法：在 repo root 建立 SYSTEM_INDEX.md，內容索引所有 governance docs + kernel modules
   ```bash
   # 最小合法 SYSTEM_INDEX.md
-  echo "# SYSTEM_INDEX\n## Governance Entry Point\nSee AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
+  echo "# SYSTEM_INDEX
+## Governance Entry Point
+See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
   git add SYSTEM_INDEX.md
   git commit -m "fix(governance): add SYSTEM_INDEX.md — resolve STRUCTURAL_WARNING"
   git push
@@ -291,7 +293,7 @@ CI 失敗時：
 - 影響 Repo：所有在 Windows 上建立 .yml 的 repo
 - 標準修法：
   ```bash
-  sed -i 's/\r//' .github/workflows/[file].yml
+  sed -i 's///' .github/workflows/[file].yml
   # 或確認 .gitattributes 有：
   # *.yml text eol=lf
   ```
