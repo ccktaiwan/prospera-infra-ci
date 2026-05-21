@@ -399,3 +399,25 @@ CI 失敗時：
 - 標準修法：pattern_learner 觀察 3 次以上失敗 → 自動生成 KF 候選 → 人工確認後補入
 - 首次發現：2026-05-21
 - DNA 要素：要素五
+
+---
+
+## KF-021｜Spend Limit 止血後未重設正常值導致 Claude Code 中斷
+
+- 症狀：收到 Anthropic 信件「your account balance has crossed the $X threshold」，Claude Code 停止運作，API 呼叫全部暫停至月底
+- 根本原因：
+  1. 之前 LK5 API key 洩漏事件（2026-05）緊急止血，將 spend limit 從 $500 調低至 $20
+  2. 止血後沒有重新設定符合正常運作的合理上限
+  3. 正常用量（Claude Code + gateway 開發測試）每月約 $20-30，早已超過止血值
+- 影響範圍：所有依賴 API 的工作流程（Claude Code 全停、gateway.py 測試中斷）
+- 標準修法：
+  1. 前往 https://platform.claude.com/settings/billing
+  2. Spend limits → 點「Adjust limit」
+  3. 設為 $50（符合正常用量，不需隨意擴張）
+  4. 確認 SKILL-CORE §16 API key 安全規則仍然生效（不直接呼叫 API）
+- 預防機制：
+  - 每次緊急調低 spend limit 後，必須在 known_failures 登記「待重設」
+  - 正常運作上限：$50（Claude Code + gateway 開發測試用量）
+  - 若出現異常飆升（單日 > $10）→ 立即查 API keys 是否洩漏（參照 KF-016 流程）
+- 首次發現：2026-05-21
+- DNA 要素：要素八（AI 協作協議）
