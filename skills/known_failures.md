@@ -358,4 +358,26 @@ CI 失敗時：
 
 ---
 
+## KF-017｜Human-Reviewed PENDING 誤用
+
+- 症狀：工程產出標注 PENDING，暗示人類需要逐一確認
+- 根本原因：沒有區分人類治理和 AI 工程執行兩個角色
+- 影響 Repo：所有 prospera-* repo 的 AI Header
+- 標準修法：工程產出一律改為 `Human-Reviewed: AI`，僅架構決策用 `YES`
+- 首次發現：2026-05-21
+- DNA 要素：要素九（AI Header 標準）
+
+---
+
+## KF-018｜指令內有 markdown fenced code block 造成介面切斷
+
+- 症狀：Claude.ai 把指令切成多段，無法完整複製貼上
+- 根本原因：指令內使用三個反引號的 code fence，Claude.ai 介面將其解析為格式符號
+- 影響 Repo：所有透過 Claude.ai 發送給 Claude Code 的 PowerShell 指令
+- 標準修法：改用 PowerShell here-string（@'...'@）或純文字行內描述，避免三反引號
+- 首次發現：2026-05-21
+- DNA 要素：要素四（Commit 四標準）
+
+---
+
 *v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Append-only*
