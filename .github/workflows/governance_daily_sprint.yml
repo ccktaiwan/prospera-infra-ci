@@ -67,6 +67,7 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
+          secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
           password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
           subject: "Prospera OS Daily Sprint - ${{ job.status }}"
@@ -75,4 +76,4 @@ jobs:
           body: |
             Sprint 完成時間：${{ github.run_id }}
             狀態：${{ job.status }}
-            查看詳情：https://github.com/ccktaiwan/${{ github.repository }}/actions
+            查看詳情：https://github.com/ccktaiwan/prospera-ci-shared/actions
