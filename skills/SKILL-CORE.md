@@ -127,7 +127,7 @@ Starting From:    [從哪個步驟繼續]
 遇到以下情況，自動等待後繼續，不中斷任務：
 
 | 錯誤類型 | 處理方式 |
-|---------|---------|
+|---------|----------|
 | 429 / rate limit / secondary rate | 等 60 秒繼續 |
 | 403 Forbidden | 等 30 秒繼續 |
 | Connection reset / timeout | 等 15 秒，最多重試 3 次 |
