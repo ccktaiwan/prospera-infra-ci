@@ -1,7 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 ## Document Header
 - Document Type: Codex
-- Version: v1.3
+- Version: v1.4
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
@@ -120,6 +120,7 @@ Starting From:    [從哪個步驟繼續]
 | v1.1 | 2026-05-20 | 新增 §7 CI-Fail-First（KF-007）、§8 RESTART DECLARATION 快查 |
 | v1.2 | 2026-05-21 | 新增 §10 限流自動處理、§11 CI 觸發後不用 sleep 等待 |
 | v1.3 | 2026-05-21 | 新增 §12 指令必須單一完整區塊 |
+| v1.4 | 2026-05-21 | 新增 §13 API Key 使用規則（防止意外收費）|
 
 ---
 
@@ -161,4 +162,13 @@ Starting From:    [從哪個步驟繼續]
 
 ---
 
-*v1.3 · 2026-05-21 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+## 13. API Key 使用規則（防止意外收費）
+
+MUST NOT：不可把 Anthropic API key 存進 .env 或系統環境變數
+MUST NOT：不可在 agent 程式碼裡直接呼叫 Anthropic API（會產生費用）
+MUST：所有 AI 呼叫透過 Claude.ai 或 Claude Code（月費制，不另計費）
+例外：明確需要 API 呼叫時，人工確認後才設定，用完立刻刪除
+
+---
+
+*v1.4 · 2026-05-21 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
