@@ -392,3 +392,10 @@ CI 失敗時：
 ---
 
 *v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Append-only*
+
+## KF-020 Self-Healing 未覆蓋的新錯誤模式
+- 症狀：auto_heal 回傳 unknown_failure_create_issue
+- 根本原因：新錯誤不在 known_failures.md 中
+- 標準修法：pattern_learner 觀察 3 次以上失敗 → 自動生成 KF 候選 → 人工確認後補入
+- 首次發現：2026-05-21
+- DNA 要素：要素五
