@@ -421,3 +421,15 @@ CI 失敗時：
   - 若出現異常飆升（單日 > $10）→ 立即查 API keys 是否洩漏（參照 KF-016 流程）
 - 首次發現：2026-05-21
 - DNA 要素：要素八（AI 協作協議）
+
+---
+
+## KF-022｜雙向生成演算法未整合進主諮詢流程
+
+- 症狀：consulting_pipeline 執行但各引擎獨立運作，未使用雙向對齊結果
+- 根本原因：各引擎分別建立，沒有統一入口串接 Alignment → External → Knowledge
+- 標準修法：使用 prosperagen_full_pipeline.py 作為統一入口（已修復）
+  - 引擎鏈：Diagnostic → Alignment → External → Knowledge → Layout → Pipeline
+  - 缺失引擎（ontology/learning/community）自動降級，不影響核心流程
+- 首次發現：2026-05-21 已修復（commit a422369）
+- DNA 要素：要素三（雙向生成演算法）
