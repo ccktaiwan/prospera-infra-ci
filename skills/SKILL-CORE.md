@@ -1,12 +1,12 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 ## Document Header
 - Document Type: Codex
-- Version: v1.1
+- Version: v1.2
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素一～十（全部）
-- Last Updated: 2026-05-20
+- Last Updated: 2026-05-21
 
 ---
 
@@ -118,7 +118,32 @@ Starting From:    [從哪個步驟繼續]
 |------|------|------|
 | v1.0 | 2026-05-19 | 初版發布 |
 | v1.1 | 2026-05-20 | 新增 §7 CI-Fail-First（KF-007）、§8 RESTART DECLARATION 快查 |
+| v1.2 | 2026-05-21 | 新增 §10 限流自動處理、§11 CI 觸發後不用 sleep 等待 |
 
 ---
 
-*v1.1 · 2026-05-20 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+## 10. 限流自動處理（Rate Limit）
+
+遇到以下情況，自動等待後繼續，不中斷任務：
+
+| 錯誤類型 | 處理方式 |
+|---------|---------|
+| 429 / rate limit / secondary rate | 等 60 秒繼續 |
+| 403 Forbidden | 等 30 秒繼續 |
+| Connection reset / timeout | 等 15 秒，最多重試 3 次 |
+| push rejected fetch first | 自動 `git pull --rebase` 再 push |
+| sleep 被封鎖 | 改用 `gh run watch --exit-status` |
+
+---
+
+## 11. CI 觸發後不用 sleep 等待
+
+```
+❌ sleep 35 && gh run view [id]      ← Claude Code 會封鎖 sleep
+✅ gh run watch [id] --exit-status   ← 正確做法（阻塞直到完成）
+✅ 分兩步：先觸發，後續再查結果       ← 不需要等待時用此模式
+```
+
+---
+
+*v1.2 · 2026-05-21 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
