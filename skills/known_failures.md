@@ -435,3 +435,31 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
   - 缺失引擎（ontology/learning/community）自動降級，不影響核心流程
 - 首次發現：2026-05-21 已修復（commit a422369）
 - DNA 要素：要素三（雙向生成演算法）
+
+---
+
+## KF-023｜Docker Hub Rate Limit 導致 Smoke-test 失敗
+
+- 症狀：CI Fail，`docker build` 第二次執行時 `#2 [auth] library/python:pull token` 卡住或失敗，exit code 非 0
+- 根本原因：workflow 內 smoke-test 步驟重複執行 `docker build .`，第二次從 Docker Hub pull base image 觸發 rate limit（匿名用戶 100次/6小時）
+- 影響 Repo：prospera-os
+- 標準修法：
+  1. build step 加 `load: true`，讓 image 載入 local daemon（不重複 pull）
+  2. smoke-test 步驟改用已 build 的 image tag，不再觸發 pull
+
+  ```yaml
+  # build step（加 load: true + 固定 tag）
+  - name: Build Docker image
+    uses: docker/build-push-action@v5
+    with:
+      context: .
+      push: false
+      load: true
+      tags: prospera-os:smoke
+
+  # smoke-test step（直接 run 已有 image，不 pull）
+  - name: Smoke test
+    run: docker run prospera-os:smoke python -c "print('smoke ok')"
+  ```
+- 首次發現：2026-05-24
+- DNA 要素：要素五（可工程實作）
