@@ -463,3 +463,19 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
   ```
 - 首次發現：2026-05-24
 - DNA 要素：要素五（可工程實作）
+
+---
+
+## KF-024｜Claude Project 分段輸出 HANDOFF 問題
+
+- 症狀：HANDOFF 指令在 Claude.ai 介面傳送給 Claude Code 時被截斷，Claude Code 只收到前半段，後半段（通常是格式規範或程式碼區塊）遺失，導致任務不完整
+- 根本原因：HANDOFF 內含 markdown fenced code block（三反引號），Claude.ai Project 介面將其解析為格式符號並截斷輸出流，Claude Code 收到的訊息不完整
+- 影響 Repo：all（透過 Claude.ai Project HANDOFF 傳送的所有跨任務指令）
+- 標準修法：
+  1. HANDOFF 中的程式碼區塊改用 PowerShell here-string 格式（@'...'@）
+  2. 或將程式碼區塊改寫為純文字描述，不使用三反引號
+  3. 傳送後確認 Claude Code 端收到完整內容（查看 context 長度是否合理）
+  4. 若懷疑截斷：Claude Code 端補充詢問「HANDOFF 是否完整？請回傳最後一行」
+- 預防：見 SKILL-CORE §18（給 Claude Code 的指令格式禁止事項）
+- 首次發現：2026-05-24（SKILL-11 HANDOFF 在 § 3. Human Report 標準格式後截斷）
+- DNA 要素：要素八（AI 協作協議）
