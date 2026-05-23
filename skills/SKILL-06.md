@@ -1,12 +1,12 @@
 # SKILL-06｜Multi-Step Task Checkpoint
 ## Document Header
 - Document Type: Codex
-- Version: v1.0
+- Version: v1.1
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素八（AI 協作協議 + J 點系統）
-- Last Updated: 2026-05-19
+- Last Updated: 2026-05-24
 
 ---
 
@@ -147,4 +147,18 @@ Step 5｜等待人類確認後才繼續執行
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+## 9. PHASE SUMMARY 後輸出 Human Report（SKILL-11）
+
+每次輸出 PHASE SUMMARY 後，必須緊接輸出 SKILL-11 Human-Readable Execution Report。
+
+```
+觸發：PHASE SUMMARY 輸出完畢後，立即觸發
+動作：依 SKILL-11 §3 標準格式輸出 HUMAN REPORT
+目的：讓人類 30 秒內掌握任務結果，不需逐行讀 PHASE SUMMARY
+```
+
+詳細格式與範例 → SKILL-11.md
+
+---
+
+*v1.1 · 2026-05-24 · prospera-ci-shared/skills/*

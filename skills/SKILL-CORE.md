@@ -1,6 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ## Changelog
+- v2.2（2026-05-24）：§6 新增 SKILL-11（Human-Readable Execution Report）
 - v2.1（2026-05-22）：執行模式升級為「不問，執行，事後通知」；新增 §19 J點觸發規則 v2.1
 - v1.6（2026-05-21）：新增 §19 Claude Code 行為規則（禁止詢問句/純指令）
 - v1.0（2026-05-19）：初始版本
@@ -9,12 +10,12 @@
 
 ## Document Header
 - Document Type: Codex
-- Version: v2.1
+- Version: v2.2
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素一～十（全部）
-- Last Updated: 2026-05-22
+- Last Updated: 2026-05-24
 
 ---
 
@@ -80,6 +81,7 @@ Generated / Model / Phase / Layer / Target Repo / Governing Codex / Human-Review
 | SKILL-08 | 每個新機制或新引擎建立後 | SKILL-08.md |
 | SKILL-09 | 任何 99_archive 救援或檔案遷移前 | SKILL-09.md |
 | SKILL-10 | 任何新 repo 建立或 repo 封存前 | SKILL-10.md |
+| SKILL-11 | 每次 PHASE SUMMARY 輸出後 | SKILL-11.md |
 
 ---
 
@@ -258,7 +260,8 @@ ERRORS: [錯誤清單，沒有填「無」]
 | v1.5 | 2026-05-21 | 新增 §17 Human-Reviewed v2.0 + §18 指令格式禁止事項 |
 | v1.6 | 2026-05-21 | 新增 §19 Claude Code 行為規則（禁止詢問句/純指令）|
 | v2.1 | 2026-05-22 | §19 升級為 J點觸發規則 v2.1（不問，執行，事後通知）|
+| v2.2 | 2026-05-24 | §6 新增 SKILL-11（Human-Readable Execution Report）|
 
 ---
 
-*v2.1 · 2026-05-22 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+*v2.2 · 2026-05-24 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
