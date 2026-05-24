@@ -1,6 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ## Changelog
+- v3.0（2026-05-24）：新增 §10 Harness 組件快查 + §11 known_failures 快查 + §12 系統狀態
 - v2.3（2026-05-24）：新增 §2 Harness 啟動四步 + 執行模式邊界表
 - v2.2（2026-05-24）：§6 新增 SKILL-11（Human-Readable Execution Report）
 - v2.1（2026-05-22）：執行模式升級為「不問，執行，事後通知」；新增 §19 J點觸發規則 v2.1
@@ -11,7 +12,7 @@
 
 ## Document Header
 - Document Type: Codex
-- Version: v2.3
+- Version: v3.0
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
@@ -286,7 +287,40 @@ ERRORS: [錯誤清單，沒有填「無」]
 | v2.1 | 2026-05-22 | §19 升級為 J點觸發規則 v2.1（不問，執行，事後通知）|
 | v2.2 | 2026-05-24 | §6 新增 SKILL-11（Human-Readable Execution Report）|
 | v2.3 | 2026-05-24 | 新增 §2 Harness 啟動四步 + 執行模式邊界表 |
+| v3.0 | 2026-05-24 | 新增 §10 Harness 組件快查 + §11 KF 快查 + §12 系統狀態 |
 
 ---
 
-*v2.3 · 2026-05-24 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+## 10. Harness 組件快查
+
+| 組件 | 路徑 | 用途 |
+|------|------|------|
+| phase_lock_gate.py | prospera-os/harness/ | Phase 宣告 + audit log |
+| project_state.py | prospera-os/harness/ | 任務狀態持久化 |
+| evidence_enforcer.py | prospera-os/harness/ | drift scan + artifact 驗證 |
+| mcp_server.py | prospera-os/ | 全鏈路執行入口 |
+| drift_scan.py | prospera-ci-shared/scripts/ | CI drift 掃描 |
+| artifact_semantic_validator.py | prospera-ci-shared/scripts/ | CI 語意驗證 |
+
+---
+
+## 11. known_failures 快查（最新）
+
+KF-008：agent_registry.yaml 需 dict 格式（非 list）
+KF-009：evidence_enforcer 不適用結構化 JSON，改用 check_drift(task)
+
+---
+
+## 12. 當前系統狀態（2026-05-24）
+
+| 組件 | 狀態 |
+|------|------|
+| prospera-os/harness/ | ✅ Harness v1.0 上線 |
+| prospera-os/mcp_server.py | ✅ 全鏈路接通 |
+| CI Phase Lock Check | ✅ artifact_semantic_check.yml |
+| SKILL-CORE | ✅ v3.0 |
+| 全鏈路驗證 | ✅ T1/T2/T3 PASS |
+
+---
+
+*v3.0 · 2026-05-24 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*

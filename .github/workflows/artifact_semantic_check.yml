@@ -1,0 +1,46 @@
+name: Artifact Semantic Check
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  semantic-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
+          fetch-depth: 2
+      - name: Get changed files
+        id: changed
+        run: |
+          git diff --name-only HEAD~1 HEAD > changed_files.txt
+          cat changed_files.txt
+      - name: Extract phase from commit message
+        id: phase
+        run: |
+          MSG=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }})
+          PHASE=$(echo "$MSG" | grep -oP '(?<=\[Phase)\d(?=\])' | head -1)
+          echo "phase=${PHASE:-4}" >> $GITHUB_OUTPUT
+          echo "Detected phase: ${PHASE:-4}"
+      - name: Phase Lock check
+        run: |
+          MSG=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }})
+          if ! echo "$MSG" | grep -qE "\[Phase[0-6]\]"; then
+            echo "FAIL PHASE LOCK VIOLATION: missing [PhaseN]"
+            exit 1
+          fi
+          echo "OK Phase Lock OK"
+      - name: Artifact semantic validation
+        run: |
+          pip install -q --break-system-packages pathlib
+          PHASE=${{ steps.phase.outputs.phase }}
+          FAIL=0
+          while IFS= read -r f; do
+            if [[ "$f" == *.py ]] || [[ "$f" == *.json ]] || [[ "$f" == *.md ]]; then
+              python scripts/artifact_semantic_validator.py "$f" --phase "$PHASE" || FAIL=1
+            fi
+          done < changed_files.txt
+          exit $FAIL
+      - name: Drift scan
+        run: |
+          python scripts/drift_scan.py --path . --fail-on-drift
