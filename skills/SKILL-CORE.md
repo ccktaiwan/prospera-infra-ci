@@ -1,6 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ## Changelog
+- v2.3（2026-05-24）：新增 §2 Harness 啟動四步 + 執行模式邊界表
 - v2.2（2026-05-24）：§6 新增 SKILL-11（Human-Readable Execution Report）
 - v2.1（2026-05-22）：執行模式升級為「不問，執行，事後通知」；新增 §19 J點觸發規則 v2.1
 - v1.6（2026-05-21）：新增 §19 Claude Code 行為規則（禁止詢問句/純指令）
@@ -10,7 +11,7 @@
 
 ## Document Header
 - Document Type: Codex
-- Version: v2.2
+- Version: v2.3
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
@@ -28,7 +29,30 @@
 
 ---
 
-## 2. 標準任務流程
+## 2. Harness 啟動（任務開始前必做四步）
+
+Step 1｜宣告 Phase Lock Declaration（SKILL-05 §5 格式）
+Step 2｜建立或載入 Project State
+prospera-os/harness/project_state.py
+Step 3｜宣告執行模式
+MODE: [Inventory / Planning / Execution / Validation]
+Step 4｜確認 Evidence 要求
+這個任務需要真實掃描嗎？YES → 先掃再輸出
+
+沒有完成四步就執行 = Harness Violation。
+
+執行模式邊界：
+
+| 模式 | 允許輸出 | 禁止輸出 |
+|------|---------|---------|
+| Inventory | 清單、路徑、真實狀態 | 推測、建議 |
+| Planning  | Step清單、流程順序 | 直接改檔 |
+| Execution | artifact、程式碼 | 長篇說明 |
+| Validation| Pass/Fail報告 | 宣稱未驗證成功 |
+
+---
+
+## 2b. 標準任務流程
 
 ```
 [開始] → 讀 SKILL-CORE §6 → 讀對應 Skill → 執行
@@ -261,7 +285,8 @@ ERRORS: [錯誤清單，沒有填「無」]
 | v1.6 | 2026-05-21 | 新增 §19 Claude Code 行為規則（禁止詢問句/純指令）|
 | v2.1 | 2026-05-22 | §19 升級為 J點觸發規則 v2.1（不問，執行，事後通知）|
 | v2.2 | 2026-05-24 | §6 新增 SKILL-11（Human-Readable Execution Report）|
+| v2.3 | 2026-05-24 | 新增 §2 Harness 啟動四步 + 執行模式邊界表 |
 
 ---
 
-*v2.2 · 2026-05-24 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+*v2.3 · 2026-05-24 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
