@@ -479,3 +479,26 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 - 預防：見 SKILL-CORE §18（給 Claude Code 的指令格式禁止事項）
 - 首次發現：2026-05-24（SKILL-11 HANDOFF 在 § 3. Human Report 標準格式後截斷）
 - DNA 要素：要素八（AI 協作協議）
+
+---
+
+## KF-008｜agent_registry.yaml list→dict 格式錯誤
+
+- 症狀：GovernanceKernel.validate_agent() KeyError 或 TypeError
+- 根本原因：AGENT_REGISTRY.yaml agents 欄位為 list，但 validate_agent() 需要 dict 索引
+- 影響 Repo：prospera-os（b0d4dfa）
+- 標準修法：agents 欄位改為 dict，key = agent_id
+- 首次發現：2026-05-24
+- DNA 要素：要素五（可工程實作）
+
+---
+
+## KF-009｜evidence_enforcer 不適用結構化 JSON result
+
+- 症狀：enforce(json.dumps(result)) 誤判 PASS/DRIFT，邏輯錯誤
+- 根本原因：enforce() 設計用途是掃描 AI 文字輸出的 drift signal，
+  不適用於結構化 JSON（無 drift signal 但也無 artifact marker）
+- 影響 Repo：prospera-os mcp_server.py（b0d4dfa）
+- 標準修法：MCP 結果改用 check_drift(req.task) 掃描 task 輸入字串
+- 首次發現：2026-05-24
+- DNA 要素：要素五（可工程實作）
