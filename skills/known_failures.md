@@ -502,3 +502,16 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 - 標準修法：MCP 結果改用 check_drift(req.task) 掃描 task 輸入字串
 - 首次發現：2026-05-24
 - DNA 要素：要素五（可工程實作）
+
+---
+
+## KF-025｜Claude 給 Claude Code 的指令混入說明文字
+
+- 症狀：指令夾雜說明段落、分隔線、STEP標題，浪費 token
+- 根本原因：Claude 用「人類讀者」思維寫「機器執行」指令
+- 標準格式：一個 code block，純指令，無說明，無分隔線
+  結構：PHASE LOCK → MODE → 指令序列 → CHECKPOINT 格式
+- MUST NOT：code block 外出現任何說明文字
+- MUST NOT：用 ─── 或 STEP N 製造視覺層次
+- 首次發現：2026-05-24
+- DNA 要素：要素八（AI 協作協議）
