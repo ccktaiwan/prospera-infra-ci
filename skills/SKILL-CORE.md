@@ -1,6 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ## Changelog
+- v3.2（2026-05-28）：新增 §6 SKILL-12 GitHub Push & Remote Verification；新增 KF-012~014
 - v3.1（2026-05-28）：新增 §20 claude agents 多工模式快查
 - v3.0（2026-05-24）：新增 §10 Harness 組件快查 + §11 known_failures 快查 + §12 系統狀態
 - v2.3（2026-05-24）：新增 §2 Harness 啟動四步 + 執行模式邊界表
@@ -108,6 +109,7 @@ Generated / Model / Phase / Layer / Target Repo / Governing Codex / Human-Review
 | SKILL-09 | 任何 99_archive 救援或檔案遷移前 | SKILL-09.md |
 | SKILL-10 | 任何新 repo 建立或 repo 封存前 | SKILL-10.md |
 | SKILL-11 | 每次 PHASE SUMMARY 輸出後 | SKILL-11.md |
+| SKILL-12 | 任何 git push 後 + 設計 Claude Code 計畫文件後 | SKILL-12.md |
 
 ---
 
@@ -330,6 +332,9 @@ ERRORS: [錯誤清單，沒有填「無」]
 
 KF-008：agent_registry.yaml 需 dict 格式（非 list）
 KF-009：evidence_enforcer 不適用結構化 JSON，改用 check_drift(task)
+KF-012：push 後 Already up to date 但檔案不存在 → 執行 SKILL-12 §3 API 驗證
+KF-013：hint: divergent branches → git config pull.rebase false + pull --no-edit
+KF-014：Claude Code 找不到計畫文件 → SKILL-12 §4 重新 push 並 API 驗證
 
 ---
 
