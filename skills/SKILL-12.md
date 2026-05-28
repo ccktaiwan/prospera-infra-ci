@@ -117,7 +117,28 @@ git push origin main
 
 ---
 
-## 8. Audit Requirements
+## 8. Claude Sonnet 輸出格式規則（MUST）
+
+Claude Sonnet 設計完任何執行計畫後，輸出格式只有兩種：
+
+**情況一：給 Claude Code 執行的指令**
+直接輸出單一完整指令區塊，無說明文字，無 markdown，無解釋：
+```
+git -C C:\AI_WorkDir\GitHub\[repo] pull origin main && 請執行 [計畫文件路徑]，全程不中斷
+```
+
+**情況二：需要人類決策**
+只輸出一個問題，不超過兩行。
+
+**MUST NOT：**
+- 不輸出「我現在要做...」「以下是...」「下一步...」等說明段落
+- 不輸出執行過程的解釋
+- 不輸出已驗證的技術細節（那是 PHASE SUMMARY 的工作）
+- 不在給指令前先說「給 Claude Code 的指令是：」
+
+---
+
+## 9. Audit Requirements
 
 每次 push 後記錄：
 ```
