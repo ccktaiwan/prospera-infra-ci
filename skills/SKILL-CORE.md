@@ -1,6 +1,7 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ## Changelog
+- v3.1（2026-05-28）：新增 §20 claude agents 多工模式快查
 - v3.0（2026-05-24）：新增 §10 Harness 組件快查 + §11 known_failures 快查 + §12 系統狀態
 - v2.3（2026-05-24）：新增 §2 Harness 啟動四步 + 執行模式邊界表
 - v2.2（2026-05-24）：§6 新增 SKILL-11（Human-Readable Execution Report）
@@ -12,12 +13,12 @@
 
 ## Document Header
 - Document Type: Codex
-- Version: v3.0
+- Version: v3.1
 - Status: Approved
 - Owner: prospera-ci-shared/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素一～十（全部）
-- Last Updated: 2026-05-24
+- Last Updated: 2026-05-28
 
 ---
 
@@ -157,7 +158,12 @@ Starting From:    [從哪個步驟繼續]
 | v1.3 | 2026-05-21 | 新增 §12 指令必須單一完整區塊 |
 | v1.4 | 2026-05-21 | 新增 §13 API Key 使用規則（防止意外收費）|
 | v1.5 | 2026-05-21 | 新增 §17 Human-Reviewed v2.0 + §18 指令格式禁止事項 |
-| v1.6 | 2026-05-21 | 新增 §19 Claude Code 行為規則（禁止詢問句/純指令） |
+| v1.6 | 2026-05-21 | 新增 §19 Claude Code 行為規則（禁止詢問句/純指令）|
+| v2.1 | 2026-05-22 | §19 升級為 J點觸發規則 v2.1（不問，執行，事後通知）|
+| v2.2 | 2026-05-24 | §6 新增 SKILL-11（Human-Readable Execution Report）|
+| v2.3 | 2026-05-24 | 新增 §2 Harness 啟動四步 + 執行模式邊界表 |
+| v3.0 | 2026-05-24 | 新增 §10 Harness 組件快查 + §11 KF 快查 + §12 系統狀態 |
+| v3.1 | 2026-05-28 | 新增 §20 claude agents 多工模式快查 |
 
 ---
 
@@ -273,25 +279,41 @@ ERRORS: [錯誤清單，沒有填「無」]
 
 ---
 
-## 9. 版本記錄（更新）
+## 20. claude agents 多工模式快查
 
-| 版本 | 日期 | 變更 |
-|------|------|------|
-| v1.0 | 2026-05-19 | 初版發布 |
-| v1.1 | 2026-05-20 | 新增 §7 CI-Fail-First（KF-007）、§8 RESTART DECLARATION 快查 |
-| v1.2 | 2026-05-21 | 新增 §10 限流自動處理、§11 CI 觸發後不用 sleep 等待 |
-| v1.3 | 2026-05-21 | 新增 §12 指令必須單一完整區塊 |
-| v1.4 | 2026-05-21 | 新增 §13 API Key 使用規則（防止意外收費）|
-| v1.5 | 2026-05-21 | 新增 §17 Human-Reviewed v2.0 + §18 指令格式禁止事項 |
-| v1.6 | 2026-05-21 | 新增 §19 Claude Code 行為規則（禁止詢問句/純指令）|
-| v2.1 | 2026-05-22 | §19 升級為 J點觸發規則 v2.1（不問，執行，事後通知）|
-| v2.2 | 2026-05-24 | §6 新增 SKILL-11（Human-Readable Execution Report）|
-| v2.3 | 2026-05-24 | 新增 §2 Harness 啟動四步 + 執行模式邊界表 |
-| v3.0 | 2026-05-24 | 新增 §10 Harness 組件快查 + §11 KF 快查 + §12 系統狀態 |
+`claude agents` 是 Claude Code CLI 的工具，**不是 Prospera OS AgentStateBus**。
+
+### 用途
+列出當前所有 Claude Code 工作階段（sessions）——相當於 `ps aux` for Claude。
+
+### 指令
+
+| 指令 | 說明 |
+|------|------|
+| `claude agents` | 列出所有 session（人類可讀格式）|
+| `claude agents --json` | JSON 輸出（機器可讀）|
+
+### JSON 輸出格式
+```
+[{"sessionId":"...","workingDir":"...","status":"active/idle","pid":...}]
+```
+
+### 使用情境
+
+| 情境 | 做法 |
+|------|------|
+| 查看有哪些 claude 任務在跑 | `claude agents --json` |
+| 確認 --bg 任務是否在執行 | `claude agents --json` → 查 status |
+| 多工並行：主對話同時啟動背景任務 | `claude --bg "任務描述"` 啟動；`claude agents` 查狀態 |
+
+### 注意事項
+- `claude agents` 顯示的是 **Claude Code sessions**，不是 prospera-os 的 AgentStateBus agents
+- 每個 `--bg` 啟動的任務有獨立 sessionId
+- 背景任務完成後 status 由 active → idle
 
 ---
 
-## 10. Harness 組件快查
+## Harness 組件快查
 
 | 組件 | 路徑 | 用途 |
 |------|------|------|
@@ -304,23 +326,25 @@ ERRORS: [錯誤清單，沒有填「無」]
 
 ---
 
-## 11. known_failures 快查（最新）
+## known_failures 快查（最新）
 
 KF-008：agent_registry.yaml 需 dict 格式（非 list）
 KF-009：evidence_enforcer 不適用結構化 JSON，改用 check_drift(task)
 
 ---
 
-## 12. 當前系統狀態（2026-05-24）
+## 當前系統狀態（2026-05-28）
 
 | 組件 | 狀態 |
 |------|------|
 | prospera-os/harness/ | ✅ Harness v1.0 上線 |
-| prospera-os/mcp_server.py | ✅ 全鏈路接通 |
+| prospera-os/mcp_server.py | ✅ 全鏈路接通（localhost primary）|
 | CI Phase Lock Check | ✅ artifact_semantic_check.yml |
-| SKILL-CORE | ✅ v3.0 |
-| 全鏈路驗證 | ✅ T1/T2/T3 PASS |
+| SKILL-CORE | ✅ v3.1 |
+| Phase 5 Failure Modes | ✅ FULL COMPLETE（E1-E10 ALL PASS）|
+| Phase 6 Validation & Evolution | PENDING（Stage 1 Definition）|
+| Railway MCP Server | ⏳ Trial 到期後停止，不升級 |
 
 ---
 
-*v3.0 · 2026-05-24 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+*v3.1 · 2026-05-28 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
