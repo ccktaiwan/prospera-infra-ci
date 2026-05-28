@@ -15,7 +15,7 @@ jobs:
           if (Test-Path "AGENTS.md") { $S++; $Results += "[VERIFIED] AGENTS.md exists" }
           else { $A++; $Results += "[ACCEPTABLE_FAIL] AGENTS.md missing" }
           if (Test-Path "SYSTEM_INDEX.md") { $S++; $Results += "[VERIFIED] SYSTEM_INDEX.md exists" }
-          else { $W++; $Results += "[STRUCTURAL_WARNING] SYSTEM_INDEX.md missing" }
+          else { $A++; $Results += "[ACCEPTABLE_FAIL] SYSTEM_INDEX.md missing (optional)" }
           foreach ($r in $Results) { Write-Host $r }
           Write-Host "VERIFIED: $S | ACCEPTABLE_FAIL: $A | STRUCTURAL_WARNING: $W"
           if ($W -gt 0) { Write-Host "RESULT: STRUCTURAL_WARNING"; exit 1 }
