@@ -1,6 +1,22 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ---
+## EXECUTION LANGUAGE RULE（Windows 環境）
+
+在 Windows 環境執行任何任務時：
+- **優先使用 Python**（無長度限制、無確認提示、跨平台）
+- **禁止使用 PowerShell 執行超過 3 行的腳本**
+- GitHub API 呼叫一律用 Python `requests` library
+- 檔案操作一律用 Python `pathlib`
+- 只有在 Python 無法完成的情況下才用 PowerShell
+
+```python
+import os, subprocess
+token = os.environ.get('GITHUB_TOKEN') or subprocess.run(['gh','auth','token'], capture_output=True, text=True).stdout.strip()
+```
+
+---
+
 ## EXECUTION MODEL — Claude Code is the executor
 
 When working with prospera-os or any Prospera repo:
@@ -21,6 +37,7 @@ Producing files for humans to run manually = wrong pattern, always refuse it.
 ---
 
 ## Changelog
+- v3.4（2026-05-29）：新增 EXECUTION LANGUAGE RULE — Python 優先，禁止 PowerShell 超過 3 行
 - v3.3（2026-05-29）：新增 EXECUTION MODEL — Claude Code is the executor
 - v3.2（2026-05-28）：新增 §6 SKILL-12 GitHub Push & Remote Verification；新增 KF-012~014
 - v3.1（2026-05-28）：新增 §20 claude agents 多工模式快查
@@ -223,6 +240,7 @@ J-IRREVERSIBLE 清單：
 | v3.0 | 2026-05-24 | 新增 §10 Harness 組件快查 + §11 KF 快查 + §12 系統狀態 |
 | v3.1 | 2026-05-28 | 新增 §20 claude agents 多工模式快查 |
 | v3.2 | 2026-05-28 | 新增 §6 SKILL-12 GitHub Push & Remote Verification；新增 KF-012~014 |
+| v3.4 | 2026-05-29 | 新增 EXECUTION LANGUAGE RULE — Python 優先，禁止 PowerShell 超過 3 行 |
 | v3.3 | 2026-05-29 | 新增 EXECUTION MODEL — Claude Code is the executor |
 
 ---
@@ -408,4 +426,4 @@ KF-014：Claude Code 找不到計畫文件 → SKILL-12 §4 重新 push 並 API 
 
 ---
 
-*v3.3 · 2026-05-29 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+*v3.4 · 2026-05-29 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
