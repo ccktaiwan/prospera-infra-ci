@@ -12,20 +12,15 @@
 When working in any Prospera repo:
 - NEVER produce manual scripts for the human to run
 - ALWAYS use Claude Code to directly create files, run git, move directories
-- If a task needs a decision → ask ccktaiwan ONE question, then execute
+- If a task needs a decision -- ask ccktaiwan ONE question, then execute
 - The human judges. Claude Code executes.
 
 ---
 
 ## This repo
 
-**Repo**: prospera-infra-ci
-**Status**: ACTIVE
-**Tier**: L6 (Infra)
-**Ring**: Ring 6 — Infrastructure
-
-**Contract**:
-- INPUT: CI hook trigger + skill query
-- OUTPUT: Enforcement result + skill execution output
-
-**Purpose**: CI/CD skills, pre-commit hooks, shared enforcement layer
+**Ring**:    Ring 6
+**Tier**:    L6 — Infrastructure
+**Input**:   Every commit/PR from all repos
+**Output**:  CI pass/fail + SKILL enforcement
+**Owner**:   SKILL-CORE v3.4 + 4 workflows
