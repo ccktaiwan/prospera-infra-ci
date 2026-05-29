@@ -37,6 +37,7 @@ Producing files for humans to run manually = wrong pattern, always refuse it.
 ---
 
 ## Changelog
+- v3.5（2026-05-29）：SKILL-11 升級為 Self-Executing Plan 模式；新增視覺化產出規則
 - v3.4（2026-05-29）：新增 EXECUTION LANGUAGE RULE — Python 優先，禁止 PowerShell 超過 3 行
 - v3.3（2026-05-29）：新增 EXECUTION MODEL — Claude Code is the executor
 - v3.2（2026-05-28）：新增 §6 SKILL-12 GitHub Push & Remote Verification；新增 KF-012~014
@@ -52,12 +53,12 @@ Producing files for humans to run manually = wrong pattern, always refuse it.
 
 ## Document Header
 - Document Type: Codex
-- Version: v3.3
+- Version: v3.5
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素一～十（全部）
-- Last Updated: 2026-05-28
+- Last Updated: 2026-05-29
 
 ---
 
@@ -157,7 +158,7 @@ Generated / Model / Phase / Layer / Target Repo / Governing Codex / Human-Review
 | SKILL-08 | 每個新機制或新引擎建立後 | SKILL-08.md |
 | SKILL-09 | 任何 99_archive 救援或檔案遷移前 | SKILL-09.md |
 | SKILL-10 | 任何新 repo 建立或 repo 封存前 | SKILL-10.md |
-| SKILL-11 | 每次 PHASE SUMMARY 輸出後 | SKILL-11.md |
+| SKILL-11 | 多步驟任務開始前 / 人說「執行下一項」時 | SKILL-11.md |
 | SKILL-12 | 任何 git push 後 + 設計 Claude Code 計畫文件後 | SKILL-12.md |
 
 ---
@@ -197,6 +198,21 @@ Starting From:    [從哪個步驟繼續]
 ===================
 ```
 詳細重啟流程 → SKILL-06 §5
+
+---
+
+## 10a. 視覺化產出規則（Output Persistence）
+
+**所有視覺化產出（HTML/SVG/圖表）必須 commit + push，不得只存於對話。**
+
+```
+存放位置：{repo}/01_docs/charts/ 或 {repo}/05_products/dashboard/
+檔案格式：.html / .svg / .json（不接受截圖）
+commit 格式：[OpsGov][v3.0] docs: add {圖表名稱} visualization
+禁止狀態：不得只存在 Claude 對話或本地未 push 的狀態
+```
+
+詳細執行規則 → SKILL-11 §8
 
 ---
 
@@ -240,6 +256,7 @@ J-IRREVERSIBLE 清單：
 | v3.0 | 2026-05-24 | 新增 §10 Harness 組件快查 + §11 KF 快查 + §12 系統狀態 |
 | v3.1 | 2026-05-28 | 新增 §20 claude agents 多工模式快查 |
 | v3.2 | 2026-05-28 | 新增 §6 SKILL-12 GitHub Push & Remote Verification；新增 KF-012~014 |
+| v3.5 | 2026-05-29 | SKILL-11 升級為 Self-Executing Plan；新增 §10a 視覺化產出規則 |
 | v3.4 | 2026-05-29 | 新增 EXECUTION LANGUAGE RULE — Python 優先，禁止 PowerShell 超過 3 行 |
 | v3.3 | 2026-05-29 | 新增 EXECUTION MODEL — Claude Code is the executor |
 
