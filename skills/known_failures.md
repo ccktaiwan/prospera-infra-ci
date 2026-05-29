@@ -478,7 +478,6 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
   4. 若懷疑截斷：Claude Code 端補充詢問「HANDOFF 是否完整？請回傳最後一行」
 - 預防：見 SKILL-CORE §18（給 Claude Code 的指令格式禁止事項）
 - 首次發現：2026-05-24（SKILL-11 HANDOFF 在 § 3. Human Report 標準格式後截斷）
-- DNA 要素：要素八（AI 協作協議）
 
 ---
 
