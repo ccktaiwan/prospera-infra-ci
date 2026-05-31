@@ -78,3 +78,6 @@ Commit 格式：ci(scope): [change] - reason: [why] - phase: [N]
 
 # Version: 1.0 | 2026-04-30
 # Human-Reviewed: yes
+## Living Organism Role
+philosophy: PROSPERA_OS_PHILOSOPHY.md
+organism_role: 自主神經（自動化維護）
