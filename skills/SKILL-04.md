@@ -155,6 +155,10 @@ git commit -m "[P3][L2] feat: add authority-matrix (enforce access boundary)" `
 
 ## 6. Pre-flight 快速執行腳本
 
+> ⚠️ DEPRECATED（2026-06-06）：以下 preflight.ps1 已廢棄。
+> 違反 SKILL-CORE EXECUTION MODEL：「禁止 PowerShell 超過 3 行」「NEVER produce .ps1 for the human」。
+> 正確 preflight 鏈路：SKILL-CORE §1 強制讀取 → §2 Harness 四步（prospera-os/harness/*.py）→ entrypoint.md → system_index.yaml v3.0。
+
 ```powershell
 # 存到 C:\AI_WorkDir\GitHub\preflight.ps1
 param([string]$TargetFile)
