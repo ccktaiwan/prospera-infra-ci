@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout prospera-monitoring-agent
+        continue-on-error: true
         uses: actions/checkout@v4
         with:
           repository: ccktaiwan/prospera-monitoring-agent
@@ -35,6 +36,7 @@ jobs:
         run: pip install -q requests
 
       - name: Run auto_remediation
+        continue-on-error: true
         env:
           GITHUB_REPO: ccktaiwan/prospera-monitoring-agent
           PROSPERA_MCP_TOKEN: ${{ secrets.PROSPERA_MCP_TOKEN }}
@@ -60,6 +62,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Send completion notification
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         if: always()
         with:
