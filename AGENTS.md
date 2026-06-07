@@ -1,9 +1,9 @@
 # AGENTS.md — prospera-infra-ci
 # AI Agent Operating Contract | L3 — CI/CD Infrastructure
 # Version: 1.0 | 2026-04-30
-# Governance Reference: Prospera-Governance-Core v3.0
-# Pipeline Reference: Prospera-Workflow-Engine v1.0
-# Codex Reference: prospera-engineering-codex v2.0
+# Governance Reference: prospera-constitution-governance v3.0
+# Pipeline Reference: prospera-engine-workflow v1.0
+# Codex Reference: prospera-standard-engineering v2.0
 
 ## 1. REPO IDENTITY
 Repo: ccktaiwan/prospera-infra-ci
