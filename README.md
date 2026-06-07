@@ -1,5 +1,5 @@
 ---
-Prospera-ID: prospera-ci-shared
+Prospera-ID: prospera-infra-ci
 Governance-Category: INFRA
 AI-Worker: Google AI Studio (Gemini 1.5 Pro) / GPT-4o
 SSOT-Ref: REPO_MASTER_INDEX.json

@@ -1,4 +1,4 @@
-# AGENTS.md — prospera-ci-shared
+# AGENTS.md — prospera-infra-ci
 # AI Agent Operating Contract | L3 — CI/CD Infrastructure
 # Version: 1.0 | 2026-04-30
 # Governance Reference: Prospera-Governance-Core v3.0
@@ -6,7 +6,7 @@
 # Codex Reference: prospera-engineering-codex v2.0
 
 ## 1. REPO IDENTITY
-Repo: ccktaiwan/prospera-ci-shared
+Repo: ccktaiwan/prospera-infra-ci
 Layer: L3 — CI/CD Infrastructure（共用 CI 驗證）
 Role: 所有 Repo 的 CI/CD 治理閘門，不合規不通過
 Palantir Equivalent: Apollo CI/CD Pipeline

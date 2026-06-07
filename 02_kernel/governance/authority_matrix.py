@@ -1,6 +1,6 @@
 ﻿"""
 Prospera Authority Matrix
-Repo: prospera-ci-shared
+Repo: prospera-infra-ci
 Version: v1.0
 """
 AUTHORITY_MATRIX = {

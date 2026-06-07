@@ -1,2 +1,2 @@
-﻿# Registry loader for prospera-ci-shared
+﻿# Registry loader for prospera-infra-ci
 REGISTRY = {}

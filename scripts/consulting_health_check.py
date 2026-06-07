@@ -5,7 +5,7 @@
 # Model:            claude-sonnet-4-6
 # Phase:            Phase 2 - Infrastructure
 # Layer:            L1 Governance & Audit
-# Target Repo:      prospera-ci-shared
+# Target Repo:      prospera-infra-ci
 # Governing Codex:  prospera-engineering-codex v1.0
 # Human-Reviewed:   AI
 # Review By:        Kevin Chang

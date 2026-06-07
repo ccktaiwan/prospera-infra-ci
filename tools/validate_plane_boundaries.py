@@ -5,7 +5,7 @@
 # Model:            claude-sonnet-4-6
 # Phase:            Phase 4
 # Layer:            L4
-# Target Repo:      prospera-ci-shared
+# Target Repo:      prospera-infra-ci
 # Governing Codex:  prospera-engineering-codex v1.0
 # Human-Reviewed:   PENDING
 # ══════════════════════════════════════

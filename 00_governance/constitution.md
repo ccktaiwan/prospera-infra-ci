@@ -1,6 +1,6 @@
 ---
-# prospera-ci-shared Constitution
-Prospera-ID: prospera-ci-shared
+# prospera-infra-ci Constitution
+Prospera-ID: prospera-infra-ci
 Layer: L0
 Governed-By: prospera-engineering-codex v1.0
 Owner: ccktaiwan
