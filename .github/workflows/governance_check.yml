@@ -1,0 +1,39 @@
+---
+# yamllint disable rule:truthy
+name: Governance Check (Validation)
+"on":
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  governance-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate CONTRACT.md
+        run: |
+          if [ -f "CONTRACT.md" ]; then
+            echo "✅ CONTRACT.md found"
+          else
+            echo "⚠️ CONTRACT.md missing — add to comply with ECOSYSTEM_DESIGN_v3.0"
+          fi
+
+      - name: Check no forbidden binaries
+        run: |
+          FOUND=$(find . -name "*.exe" -o -name "*.dll" -o -name "*.zip" \
+            | grep -v ".git" | grep -v "99_archive" | head -5)
+          if [ -n "$FOUND" ]; then
+            echo "⚠️ Forbidden binaries found: $FOUND"
+          else
+            echo "✅ No forbidden binaries"
+          fi
+
+      - name: Governance summary
+        run: |
+          echo "## Governance Check (Validation Mode)" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: validation (non-blocking, enforce_admins=false)" >> $GITHUB_STEP_SUMMARY
+          echo "- Ref: ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Run: ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
