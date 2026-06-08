@@ -1,0 +1,42 @@
+name: Actions Usage Lint
+
+# Reusable workflow（workflow_call）。各 repo 以 caller 呼叫：
+#   jobs:
+#     actions-usage-lint:
+#       uses: ccktaiwan/prospera-infra-ci/.github/workflows/actions-usage-lint.yml@main
+#
+# 強制執行 governance/ACTIONS_USAGE_POLICY.md：唯一 FAIL = 高頻 cron（MUST 5），其餘 WARN。
+on:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  actions-usage-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # 呼叫端 repo（要被掃描的 workflows）→ 取到 ./ 的 .github/workflows
+      - name: Checkout caller repo
+        uses: actions/checkout@v4
+
+      # infra-ci（lint 腳本所在）→ 取到 .lint-infra/
+      - name: Checkout infra-ci (lint script)
+        uses: actions/checkout@v4
+        with:
+          repository: ccktaiwan/prospera-infra-ci
+          ref: main
+          path: .lint-infra
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install pyyaml -q
+
+      - name: Run Actions usage lint
+        run: python .lint-infra/scripts/actions_usage_lint.py --target .

@@ -1,0 +1,30 @@
+name: CI
+
+# 範本：已內建 paths-ignore（MUST 3）+ concurrency（MUST 2）+ lint caller。
+# 新 repo 複製此檔到 .github/workflows/ci.yml，依需要調整 test job。
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pytest -q
+      - run: pytest tests/ -v
+
+  # Actions 用量治理檢查（MUST 1-5 / SHOULD 6）——預載，勿移除
+  actions-usage-lint:
+    uses: ccktaiwan/prospera-infra-ci/.github/workflows/actions-usage-lint.yml@main

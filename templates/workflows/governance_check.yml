@@ -1,0 +1,39 @@
+---
+# yamllint disable rule:truthy
+name: Governance Check (Validation)
+
+# 範本：已內建 paths-ignore（MUST 3）+ concurrency（MUST 2）。
+# 驗證型治理檢查（non-blocking），複製到 .github/workflows/governance_check.yml。
+"on":
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  governance-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate CONTRACT.md
+        run: |
+          if [ -f "CONTRACT.md" ]; then
+            echo "✅ CONTRACT.md found"
+          else
+            echo "⚠️ CONTRACT.md missing"
+          fi
+
+      - name: Governance summary
+        run: |
+          echo "## Governance Check (Validation Mode)" >> $GITHUB_STEP_SUMMARY
+          echo "- Ref: ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Run: ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
