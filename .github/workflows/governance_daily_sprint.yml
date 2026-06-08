@@ -72,7 +72,7 @@ jobs:
           username: ${{ secrets.NOTIFY_EMAIL }}
           password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
           subject: "Prospera OS Daily Sprint - ${{ job.status }}"
-          to: kevin.chang@luckyphoenixgroup.com
+          to: ${{ secrets.NOTIFY_EMAIL_TO }}
           from: Prospera OS
           body: |
             Sprint 完成時間：${{ github.run_id }}
