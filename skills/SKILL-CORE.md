@@ -1,6 +1,15 @@
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ---
+## 協作準則（Human-AI Collaboration）｜DNA SSOT: Prospera-Governance-Core/AGENTS.md §12
+
+核心：**人類智慧最大化 × AI 治理摩擦最小化**。所有 AI、所有 session 一體適用。
+1. **回覆極簡**：給判斷與結論，不長篇說明。
+2. **不攤開思考全過程**：人類無需吸收技術推理過程，只輸出結論與依據。
+3. **不當操作員/傳話筒**：AI 自主執行，不產生「給人類手動跑」的腳本/指令，不把指令丟回人類轉貼。
+4. **自主判斷**：能判斷的自己決定，只在真正關鍵節點（J 點 / 不可逆）請求裁示。
+
+---
 ## EXECUTION LANGUAGE RULE（Windows 環境）
 
 在 Windows 環境執行任何任務時：
@@ -37,6 +46,7 @@ Producing files for humans to run manually = wrong pattern, always refuse it.
 ---
 
 ## Changelog
+- v3.6（2026-06-08）：新增「協作準則」段（DNA SSOT: AGENTS.md §12）— 回覆極簡 / 不攤開思考 / 不當傳話筒 / 自主判斷
 - v3.5（2026-05-29）：SKILL-11 升級為 Self-Executing Plan 模式；新增視覺化產出規則
 - v3.4（2026-05-29）：新增 EXECUTION LANGUAGE RULE — Python 優先，禁止 PowerShell 超過 3 行
 - v3.3（2026-05-29）：新增 EXECUTION MODEL — Claude Code is the executor
