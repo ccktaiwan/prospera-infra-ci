@@ -19,13 +19,13 @@ jobs:
       - name: Checkout prospera-ci-shared
         uses: actions/checkout@v4
 
-      - name: Checkout prospera-monitoring-agent
+      - name: Checkout prospera-agent-monitor
         continue-on-error: true
         uses: actions/checkout@v4
         with:
-          repository: ccktaiwan/prospera-monitoring-agent
+          repository: ccktaiwan/prospera-agent-monitor
           token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
-          path: prospera-monitoring-agent
+          path: prospera-agent-monitor
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,14 +38,14 @@ jobs:
       - name: Run auto_remediation
         continue-on-error: true
         env:
-          GITHUB_REPO: ccktaiwan/prospera-monitoring-agent
+          GITHUB_REPO: ccktaiwan/prospera-agent-monitor
           PROSPERA_MCP_TOKEN: ${{ secrets.PROSPERA_MCP_TOKEN }}
           LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           NOTIFY_EMAIL_TO: ${{ secrets.NOTIFY_EMAIL_TO }}
         run: |
-          cd prospera-monitoring-agent
+          cd prospera-agent-monitor
           DRY_FLAG=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             DRY_FLAG="--dry-run"
