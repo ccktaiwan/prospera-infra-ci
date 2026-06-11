@@ -293,7 +293,8 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 - 影響 Repo：所有在 Windows 上建立 .yml 的 repo
 - 標準修法：
   ```bash
-  sed -i 's///' .github/workflows/[file].yml
+  sed -i 's/
+//' .github/workflows/[file].yml
   # 或確認 .gitattributes 有：
   # *.yml text eol=lf
   ```
@@ -365,7 +366,7 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 - 症狀：工程產出標注 PENDING，暗示人類需要逐一確認
 - 根本原因：沒有區分人類治理和 AI 工程執行兩個角色
 - 影響 Repo：所有 prospera-* repo 的 AI Header
-- 標準修法：工程產出一律改為 `Human-Reviewed: AI`，僅架構決策用 `YES`
+- 標準修法：工程產出一律改為 `IP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)`，僅架構決策用 `YES`
 - 首次發現：2026-05-21
 - DNA 要素：要素九（AI Header 標準）
 

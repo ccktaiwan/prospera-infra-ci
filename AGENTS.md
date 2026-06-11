@@ -77,7 +77,7 @@ J3 架構決策：驗證標準修改、豁免授權
 Commit 格式：ci(scope): [change] - reason: [why] - phase: [N]
 
 # Version: 1.0 | 2026-04-30
-# Human-Reviewed: yes
+# 設計: 依 Kevin 架構 ｜執行: AI 工具(claude.ai+Claude Code) ｜驗證: 無機制驗證 ｜IP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)
 ## Living Organism Role
 philosophy: PROSPERA_OS_PHILOSOPHY.md
 organism_role: 自主神經（自動化維護）

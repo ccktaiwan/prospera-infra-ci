@@ -1,7 +1,7 @@
 """
 [Phase4][L0] feat: Drift Scan CI Script
 Governing: prospera-engineering-codex v1.0
-Human-Reviewed: AI
+# 設計: 依 Kevin 架構 ｜執行: AI 工具(claude.ai+Claude Code) ｜驗證: 無機制驗證 ｜IP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)
 """
 import argparse, sys
 from pathlib import Path

@@ -239,7 +239,7 @@ done
 # Layer:            [L1-L5 or ProsperaGen]
 # Target Repo:      [repo name]
 # Governing Codex:  prospera-engineering-codex v1.0
-# Human-Reviewed:   [YES / NO / PENDING]
+# 設計: 依 Kevin 架構 ｜執行: AI 工具(claude.ai+Claude Code) ｜驗證: 無機制驗證 ｜IP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)
 # Review By:        [reviewer name or PENDING]
 # Review Date:      [ISO 8601 or PENDING]
 # ══════════════════════════════════════

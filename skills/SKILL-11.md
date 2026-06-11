@@ -100,8 +100,7 @@ PLAN 必須 git tracked + push，不得存於本地未 push 的狀態。
 完成後自動 commit 格式：
 ```
 [OpsGov][PLAN] chore: ITEM-{N} complete — {標題}
-
-Human-Reviewed: YES
+# 設計: 依 Kevin 架構 ｜執行: AI 工具(claude.ai+Claude Code) ｜驗證: 無機制驗證 ｜IP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)
 ```
 
 ---
