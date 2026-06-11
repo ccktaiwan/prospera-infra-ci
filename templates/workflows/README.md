@@ -1,3 +1,4 @@
+<!-- Prospera SYSTEM HEADER (ADR-0032/SBOM) | 性質:idea | 設計:Kevin 架構 | 執行:AI 工具(claude.ai+Claude Code) | 驗證:無機制驗證 | IP:創造性歸 Kevin(發明人), AI 為執行工具 -->
 # Workflow 範本
 
 已合規（對齊 `governance/ACTIONS_USAGE_POLICY.md`）的 GitHub Actions 範本，供新 repo 複製。
