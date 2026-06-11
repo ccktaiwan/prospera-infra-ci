@@ -197,7 +197,7 @@ else { Write-Host "🚫 Pre-flight FAIL - 修完再 commit" }
 |------|------|------|
 | CI 失敗但本地沒跑 Pre-flight | 跳過 Pre-flight | 補執行，修正後再 push |
 | Commit message 被 Guard BLOCK | 格式不符 | 重寫 message，格式見 Step 3 |
-| Human-Reviewed: NO 進入 production | 審閱流程缺失 | revert，補審閱後重新 commit |
+| IP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032) 進入 production | 審閱流程缺失 | revert，補審閱後重新 commit |
 | Extended Description 空白 | Step 4 跳過 | git commit --amend 補寫 |
 
 ---

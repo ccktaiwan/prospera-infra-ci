@@ -165,7 +165,7 @@ import subprocess
 repo_path = r"C:\AI_WorkDir\GitHub\{repo}"
 subprocess.run(["git", "-C", repo_path, "add", "01_docs/charts/"], capture_output=True)
 subprocess.run(["git", "-C", repo_path, "commit", "-m",
-    "[OpsGov][v3.0] docs: add {name} visualization\n\nHuman-Reviewed: YES"],
+    "[OpsGov][v3.0] docs: add {name} visualization\n\nIP: 創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)"],
     capture_output=True, text=True)
 subprocess.run(["git", "-C", repo_path, "push"], capture_output=True, text=True)
 ```
