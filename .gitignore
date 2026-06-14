@@ -8,3 +8,8 @@ orchestrator_remediation_log.jsonl
 kpi_history.jsonl
 monitoring_log.jsonl
 health_*.json
+
+# 機密憑證（API key / token / secret）— 絕不進 git（ADR-030 / PENDING-052 生態衛生）
+.env
+.env.local
+*.secret
