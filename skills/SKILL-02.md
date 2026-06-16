@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素六（Repo 六種類型 + 目錄結構）
 - Last Updated: 2026-05-19
@@ -209,4 +209,4 @@ done
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*

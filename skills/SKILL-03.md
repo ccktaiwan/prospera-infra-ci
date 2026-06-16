@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素八（AI 協作協議）
 - Last Updated: 2026-05-19
@@ -122,4 +122,4 @@ PAT-EXPIRY-REMINDER: [到期日] prospera-dashboard-classic 需要 Regenerate
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*

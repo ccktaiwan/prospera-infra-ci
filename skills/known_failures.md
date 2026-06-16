@@ -1,9 +1,10 @@
+<!-- Prospera SYSTEM HEADER (ADR-0032/SBOM) | 性質:doc | 設計:Kevin 架構 | 執行:AI 工具(claude.ai+Claude Code) | 驗證:審計注入 | IP:創造性歸 Kevin(發明人) -->
 # ProsperaGen Known Failures
 ## Document Header
 - Document Type: Audit
 - Version: v1.0
 - Status: Active（Append-only，不可修改已有記錄）
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - Last Updated: 2026-05-19
 
@@ -37,7 +38,7 @@ CI 失敗時：
 
 - 症狀：CI Fail，`yaml: line 4: could not find expected ':'` 或 `mapping values are not allowed`
 - 根本原因：GPT 用 PowerShell `<# ... #>` 包裹 disabled workflow，YAML parser 不認識
-- 影響 Repo：Prospera-Governance-Core、prospera-engineering-codex、prospera-generation-layer、prospera-ci-shared
+- 影響 Repo：prospera-constitution-governance、prospera-engineering-codex、prospera-engine-generation、prospera-infra-ci
 - 標準修法：
   ```powershell
   $template = @'
@@ -65,7 +66,7 @@ CI 失敗時：
 
 - 症狀：`git mv 00_GOVERNANCE 00_governance` 在 Windows 無效，git index 仍顯示大寫
 - 根本原因：Windows NTFS 不區分大小寫，case-only rename 在 git index 不生效
-- 影響 Repo：prospera-registry、prospera-ci-shared、prospera-codex-documentation-standard、prospera-ontology-engine
+- 影響 Repo：prospera-infra-registry、prospera-infra-ci、prospera-codex-documentation-standard、prospera-ontology-engine
 - 標準修法：三步走
   ```bash
   # 有衝突檔案先撤出
@@ -225,7 +226,7 @@ CI 失敗時：
 
 - 症狀：governance_validation_v2.yml 輸出 `[STRUCTURAL_WARNING] SYSTEM_INDEX.md missing`，CI exit 1
 - 根本原因：SYSTEM_INDEX.md 是 Codex Validation 的強制存在檔案，缺失即觸發 STRUCTURAL_WARNING
-- 影響 Repo：prospera-ci-shared、prospera-identity-authority、任何需通過 Three-Class Validation 的 repo
+- 影響 Repo：prospera-infra-ci、prospera-identity-authority、任何需通過 Three-Class Validation 的 repo
 - 標準修法：在 repo root 建立 SYSTEM_INDEX.md，內容索引所有 governance docs + kernel modules
   ```bash
   # 最小合法 SYSTEM_INDEX.md
@@ -245,10 +246,10 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 
 - 症狀：dawidd6/action-send-mail@v3 失敗，`Invalid login`，GitHub Actions log 顯示 `535-5.7.8`
 - 根本原因：1) App Password 產生後未立即設定 Secret（舊密碼過期）2) SMTP port 選錯（465 SSL vs 587 STARTTLS）
-- 影響 Repo：prospera-ci-shared（governance_daily_sprint.yml）
+- 影響 Repo：prospera-infra-ci（governance_daily_sprint.yml）
 - 標準修法：
   1. Gmail → Google Account → Security → App Passwords → 建立新密碼（Prospera OS）
-  2. `gh secret set NOTIFY_EMAIL_PASSWORD --repo ccktaiwan/prospera-ci-shared --body "16碼密碼"`
+  2. `gh secret set NOTIFY_EMAIL_PASSWORD --repo ccktaiwan/prospera-infra-ci --body "16碼密碼"`
   3. 確認 workflow 使用 `server_port: 587` + `secure: false`（STARTTLS，不是 465 SSL）
 - 首次發現：2026-05-21
 - DNA 要素：要素八（AI 協作協議）
@@ -258,12 +259,12 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 ## KF-011｜Private repo checkout 失敗（PROSPERA_DASHBOARD_TOKEN 未設定）
 
 - 症狀：`Input required and not supplied: token` 或 checkout 步驟 ✗，CI exit 1
-- 根本原因：引用其他 private repo（如 prospera-monitoring-agent）的 workflow 需要 PAT，但 Secret 未設定
-- 影響 Repo：prospera-ci-shared（governance_daily_sprint.yml 的 second checkout）
+- 根本原因：引用其他 private repo（如 prospera-agent-monitor）的 workflow 需要 PAT，但 Secret 未設定
+- 影響 Repo：prospera-infra-ci（governance_daily_sprint.yml 的 second checkout）
 - 標準修法：
   ```bash
   # 從 gh CLI 取得當前 token 直接設定（不需找存檔）
-  gh auth token | gh secret set PROSPERA_DASHBOARD_TOKEN --repo ccktaiwan/prospera-ci-shared
+  gh auth token | gh secret set PROSPERA_DASHBOARD_TOKEN --repo ccktaiwan/prospera-infra-ci
   ```
   注意：self-checkout（checkout 自己的 repo）不需要 token，用預設 GITHUB_TOKEN 即可。
 - 首次發現：2026-05-21
@@ -275,7 +276,7 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 
 - 症狀：更新 SKILL-CORE.md 後執行 write_skills.py，發現檔案被覆蓋回舊版本
 - 根本原因：write_skills.py 是 canonical source，所有 skill 內容硬編碼在 Python 字串中。執行 script = 從 Python 覆蓋到 GitHub + OneDrive。應先改 script 再跑
-- 影響 Repo：prospera-ci-shared（skills/SKILL-CORE.md）
+- 影響 Repo：prospera-infra-ci（skills/SKILL-CORE.md）
 - 標準修法：
   1. 先修改 `scripts/write_skills.py` 中對應的 content 字串
   2. 再執行 `python scripts/write_skills.py`（sync 到兩個位置）
@@ -394,7 +395,7 @@ See AGENTS.md and GOVERNANCE_STATUS.md." > SYSTEM_INDEX.md
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Append-only*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/ · Append-only*
 
 ## KF-020 Self-Healing 未覆蓋的新錯誤模式
 - 症狀：auto_heal 回傳 unknown_failure_create_issue

@@ -1,7 +1,8 @@
+<!-- Prospera SYSTEM HEADER (ADR-0032/SBOM) | 性質:doc | 設計:Kevin 架構 | 執行:AI 工具(claude.ai+Claude Code) | 驗證:審計注入 | IP:創造性歸 Kevin(發明人) -->
 # SKILL-CORE｜ProsperaGen AI Execution Core
 
 ---
-## 協作準則（Human-AI Collaboration）｜DNA SSOT: Prospera-Governance-Core/AGENTS.md §12
+## 協作準則（Human-AI Collaboration）｜DNA SSOT: prospera-constitution-governance/AGENTS.md §12
 
 核心：**人類智慧最大化 × AI 治理摩擦最小化**。所有 AI、所有 session 一體適用。
 1. **回覆極簡**：給判斷與結論，不長篇說明。
@@ -178,7 +179,7 @@ Generated / Model / Phase / Layer / Target Repo / Governing Codex / Human-Review
 **CI 失敗時，第一步永遠是查 `known_failures.md`，不試錯。**
 
 ```
-Step 1｜查 known_failures.md（路徑：prospera-ci-shared/skills/）
+Step 1｜查 known_failures.md（路徑：prospera-infra-ci/skills/）
   找到匹配症狀 → 直接套標準修法 → commit → push
   找不到 → 允許試錯 → 成功後補進 known_failures.md
 
@@ -424,8 +425,8 @@ ERRORS: [錯誤清單，沒有填「無」]
 | project_state.py | prospera-os/harness/ | 任務狀態持久化 |
 | evidence_enforcer.py | prospera-os/harness/ | drift scan + artifact 驗證 |
 | mcp_server.py | prospera-os/ | 全鏈路執行入口 |
-| drift_scan.py | prospera-ci-shared/scripts/ | CI drift 掃描 |
-| artifact_semantic_validator.py | prospera-ci-shared/scripts/ | CI 語意驗證 |
+| drift_scan.py | prospera-infra-ci/scripts/ | CI drift 掃描 |
+| artifact_semantic_validator.py | prospera-infra-ci/scripts/ | CI 語意驗證 |
 
 ---
 
@@ -453,4 +454,4 @@ KF-014：Claude Code 找不到計畫文件 → SKILL-12 §4 重新 push 並 API 
 
 ---
 
-*v3.4 · 2026-05-29 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+*v3.4 · 2026-05-29 · prospera-infra-ci/skills/ · Kevin Chang（張淳嘉）*

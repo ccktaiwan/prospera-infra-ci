@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素八（AI 協作協議）+ 三個 AI 分工
 - Last Updated: 2026-05-19
@@ -178,4 +178,4 @@ Output Format: [期待的輸出格式，例如：JSON / Markdown 表格]
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*

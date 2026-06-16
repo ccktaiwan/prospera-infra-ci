@@ -19,7 +19,7 @@ jobs:
   daily-sprint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout prospera-ci-shared
+      - name: Checkout prospera-infra-ci
         uses: actions/checkout@v4
 
       - name: Checkout prospera-agent-monitor

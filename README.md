@@ -43,7 +43,7 @@ Global Linting · Path Validation · Standard Four Enforcement · PR Gating
 
 1. PURPOSE
 
-This document establishes the `prospera-ci-shared` as the primary 
+This document establishes the `prospera-infra-ci` as the primary 
 automation authority for enforcing the Prospera Engineering Codex. 
 It provides the "Digital Enforcement Officer" logic required to 
 validate repository structures, documentation depth, and commit 
@@ -67,7 +67,7 @@ integrity across the entire 37-repository ecosystem.
 3. SYSTEM INVARIANTS (NON-VIOLABLE)
 
 - I-01: NO_BYPASS_ENFORCEMENT: No repository in the `ccktaiwan` 
-  organization SHALL merge code if the `prospera-ci-shared` validation 
+  organization SHALL merge code if the `prospera-infra-ci` validation 
   fails (MND-level bypass only).
 - I-02: SSOT_ALIGNMENT: The CI logic MUST dynamically pull the 
   `REPO_MASTER_INDEX.json` from `prospera-global-inventory` to 

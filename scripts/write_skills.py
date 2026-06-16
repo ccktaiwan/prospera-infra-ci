@@ -7,11 +7,11 @@ write_skills.py — Skills 同步器（A2 修復版，2026-06-11）
 
 ★ 修復前的問題（漂移族 A2，反向漂移）：
    - 內容**寫死**在腳本（過時 v1.6 SKILL-CORE，缺 2026-06-08 協作準則段）。
-   - 寫到**死路徑** `prospera-ci-shared\skills`（repo 已 rename 為 prospera-infra-ci）。
+   - 寫到**死路徑** `prospera-infra-ci\skills`（repo 已 rename 為 prospera-infra-ci）。
    - 跑它會**覆蓋 live 手改**的 `infra-ci/skills/*.md`（live 才是 SSOT）。
 ★ 修復後（本版）：
    - **以 live `infra-ci/skills/*.md` 為單一真相源**（read-only），不再內嵌任何寫死內容。
-   - **移除死路徑** `prospera-ci-shared\skills` 寫入。
+   - **移除死路徑** `prospera-infra-ci\skills` 寫入。
    - 只**單向同步到 OneDrive 備份**；**絕不回寫 live skills**（live 是源，不被覆蓋）。
    - 對齊 ADR-0019 漂移族原則：產生器/同步器以 .md 為源、禁內容寫死。
 
@@ -34,7 +34,7 @@ ONEDRIVE = Path(os.environ.get(
     "PROSPERA_SKILLS_ONEDRIVE",
     r"C:\Users\mouse\OneDrive\Prospera_KB\10_線一_GitHub治理\skills",
 ))
-# 死路徑 prospera-ci-shared\skills：已移除，不再寫入。
+# 死路徑 prospera-infra-ci\skills：已移除，不再寫入。
 
 
 def main() -> int:
