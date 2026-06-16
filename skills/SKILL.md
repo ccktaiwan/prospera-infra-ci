@@ -1,9 +1,10 @@
+<!-- Prospera SYSTEM HEADER (ADR-0032/SBOM) | 性質:doc | 設計:Kevin 架構 | 執行:AI 工具(claude.ai+Claude Code) | 驗證:審計注入 | IP:創造性歸 Kevin(發明人) -->
 # ProsperaGen Skills 總索引
 ## Document Header
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素一～十（全部）
 - Last Updated: 2026-05-19
@@ -269,4 +270,4 @@ CI 失敗時：
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/ · Kevin Chang（張淳嘉）*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/ · Kevin Chang（張淳嘉）*

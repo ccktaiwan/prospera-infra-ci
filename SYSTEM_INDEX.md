@@ -11,7 +11,7 @@ Last-Updated: 2026-05-21
 
 # SYSTEM_INDEX — prospera-infra-ci
 
-Authoritative governance surface for the `prospera-ci-shared` repository.
+Authoritative governance surface for the `prospera-infra-ci` repository.
 All CI/CD enforcement scripts, validation workflows, and skills are indexed here.
 
 ## 1. Governance Documents

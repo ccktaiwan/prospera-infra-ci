@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.1
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素八（AI 協作協議 + J 點系統）
 - Last Updated: 2026-05-24
@@ -37,7 +37,7 @@ DONE:     [這個步驟完成了什麼，具體可驗證]
 VERIFIED: [已驗證的事，例如：CI Green / yamllint pass / 檔案存在]
 SKIPPED:  [跳過了什麼，原因是什麼]（沒有填「無」）
 NEXT:     [下一個步驟是什麼]
-STATE:    [當前系統狀態一句話，例如：prospera-registry CI Green，00_governance 已統一小寫]
+STATE:    [當前系統狀態一句話，例如：prospera-infra-registry CI Green，00_governance 已統一小寫]
 ================================
 ```
 
@@ -162,4 +162,4 @@ Step 5｜等待人類確認後才繼續執行
 
 ---
 
-*v1.1 · 2026-05-24 · prospera-ci-shared/skills/*
+*v1.1 · 2026-05-24 · prospera-infra-ci/skills/*

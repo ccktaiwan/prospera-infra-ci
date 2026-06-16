@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素四（Commit 四標準）+ 要素五（可工程實作）
 - Last Updated: 2026-05-19
@@ -125,8 +125,8 @@ Step 4｜Checkout token 確認（私有 repo）
 
 ```powershell
 # 批量替換所有含 <# 的 workflow 為停用模板
-$repos = @("Prospera-Governance-Core", "prospera-engineering-codex",
-           "prospera-generation-layer", "prospera-ci-shared")
+$repos = @("prospera-constitution-governance", "prospera-engineering-codex",
+           "prospera-engine-generation", "prospera-infra-ci")
 
 $template = @'
 # DISABLED 2026-05-19 - unified under prospera_guard.yml
@@ -181,4 +181,4 @@ foreach ($repo in $repos) {
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*

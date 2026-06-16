@@ -1,3 +1,4 @@
+# Prospera SYSTEM HEADER (ADR-0032/SBOM) | 性質:engineering | 設計:Kevin 架構 | 執行:AI 工具(claude.ai+Claude Code) | 驗證:審計注入 | IP:創造性歸 Kevin(發明人)
 """
 [Phase6][L0] feat: Artifact Semantic Validation Layer
 獨立於格式層 CI 三分類驗證（commit f590d77）

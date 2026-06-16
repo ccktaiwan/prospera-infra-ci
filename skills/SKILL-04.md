@@ -1,9 +1,10 @@
+<!-- Prospera SYSTEM HEADER (ADR-0032/SBOM) | 性質:doc | 設計:Kevin 架構 | 執行:AI 工具(claude.ai+Claude Code) | 驗證:審計注入 | IP:創造性歸 Kevin(發明人) -->
 # SKILL-04｜Commit Pre-flight
 ## Document Header
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素四（Commit 四標準）+ 要素九（AI Header）+ 快速參考卡第三組
 - Last Updated: 2026-05-19
@@ -118,8 +119,8 @@ Human-Reviewed：[YES / NO / PENDING]
 PowerShell 多行 commit 寫法：
 ```powershell
 git commit -m "[P3][L2] feat: add authority-matrix (enforce access boundary)" `
-  -m "角色：定義 prospera-registry 的存取權限邊界" `
-  -m "影響範圍：prospera-registry L2 / 依賴方：prospera-api-gateway" `
+  -m "角色：定義 prospera-infra-registry 的存取權限邊界" `
+  -m "影響範圍：prospera-infra-registry L2 / 依賴方：prospera-api-gateway" `
   -m "關聯 Issue：#42 / Phase：3" `
   -m "Human-Reviewed：PENDING"
 ```
@@ -211,7 +212,7 @@ Pre-flight 失敗記錄到 prospera-audit-ledger：
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*
 
 ---
 

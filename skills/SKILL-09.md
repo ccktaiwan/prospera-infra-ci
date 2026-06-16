@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素六（Repo 六種類型）+ Repo 成熟度標準（Level 0-7）
 - Last Updated: 2026-05-19
@@ -121,7 +121,7 @@ Step 5｜更新 dashboard
 |------------------|-------------|------|
 | prospera-execution-layer | prospera-os | 待評估 |
 | prospera-os-system-design | prospera-os | 待評估 |
-| prospera-governance-self-disclosure | Prospera-Governance-Core | 待評估 |
+| prospera-governance-self-disclosure | prospera-constitution-governance | 待評估 |
 
 ---
 
@@ -145,4 +145,4 @@ Step 5｜更新 dashboard
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*

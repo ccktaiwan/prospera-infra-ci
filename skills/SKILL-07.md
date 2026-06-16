@@ -4,7 +4,7 @@
 - Document Type: Codex
 - Version: v1.0
 - Status: Approved
-- Owner: prospera-ci-shared/skills/
+- Owner: prospera-infra-ci/skills/
 - Governing Authority: prospera-engineering-codex v1.0
 - DNA Reference: 要素三（文件規範）+ 要素五（可工程實作）+ 要素七（寫作架構）
 - Last Updated: 2026-05-19
@@ -143,4 +143,4 @@ Q3：這份文件能被稽核員用來核查系統行為嗎？
 
 ---
 
-*v1.0 · 2026-05-19 · prospera-ci-shared/skills/*
+*v1.0 · 2026-05-19 · prospera-infra-ci/skills/*
