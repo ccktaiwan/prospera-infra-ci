@@ -9,7 +9,7 @@ jobs:
   semantic-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
           fetch-depth: 0   # gate-design 修正（ADR-0061）：需完整歷史以對 base 算 PR 真正改動

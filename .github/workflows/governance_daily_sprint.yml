@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout prospera-infra-ci
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Checkout prospera-agent-monitor
         continue-on-error: true
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ccktaiwan/prospera-agent-monitor
           token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
