@@ -16,9 +16,11 @@
 在 Windows 環境執行任何任務時：
 - **優先使用 Python**（無長度限制、無確認提示、跨平台）
 - **禁止使用 PowerShell 執行超過 3 行的腳本**
-- GitHub API 呼叫一律用 Python `requests` library
+- **所有 git / GitHub 操作一律用 Python**（subprocess git，commit message 多行用 `-F` 檔案；或 GitHub API `requests`）——**禁止 PowerShell 跑 git**
 - 檔案操作一律用 Python `pathlib`
 - 只有在 Python 無法完成的情況下才用 PowerShell
+
+★**機制 enforce（非僅文件聲明，2026-06-18 堵漏洞）**：本禁令過去只在文件、未閉環＝工作流漏洞（與北極星/防偏移同型病——AI 連 3 次用 PowerShell 塞長命令撞 965 byte 上限）。現由防偏移塊B 確定性偵測器 enforce：`prospera-constitution-governance/00_governance/runtime_harness/powershell_git_guard.py`（PreToolUse，PowerShell 含 git 或 >900 byte → exit 2 擋、回饋改 Python）。wiring 待 Kevin /hooks 接 settings.json。詳 `AI_SESSION_DRIFT_GOVERNANCE.md` 塊B。
 
 ```python
 import os, subprocess
