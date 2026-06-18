@@ -12,19 +12,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PROSPERA_DASHBOARD_TOKEN }}
-          fetch-depth: 2
-      - name: Get changed files
+          fetch-depth: 0   # gate-design 修正（ADR-0061）：需完整歷史以對 base 算 PR 真正改動
+      - name: Fetch base
+        run: git fetch origin main --quiet || true
+      - name: Get changed files (vs base, PR 真正改動)
         id: changed
         run: |
-          git diff --name-only HEAD~1 HEAD > changed_files.txt
+          BASE=origin/main
+          git diff --name-only "$BASE...HEAD" > changed_files.txt
           cat changed_files.txt
-      - name: Extract phase from commit message
+      - name: Extract phases from commit message (多 phase tag union)
         id: phase
         run: |
           MSG=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }})
-          PHASE=$(echo "$MSG" | grep -oP '(?<=\[Phase)\d(?=\])' | head -1)
-          echo "phase=${PHASE:-4}" >> $GITHUB_OUTPUT
-          echo "Detected phase: ${PHASE:-4}"
+          PHASES=$(echo "$MSG" | grep -oP '(?<=\[Phase)\d(?=\])' | sort -u | paste -sd, -)
+          echo "phases=${PHASES:-4}" >> $GITHUB_OUTPUT
+          echo "Detected phases: ${PHASES:-4}"
       - name: Phase Lock check
         run: |
           MSG=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }})
@@ -33,17 +36,17 @@ jobs:
             exit 1
           fi
           echo "OK Phase Lock OK"
-      - name: Artifact semantic validation
+      - name: Artifact semantic validation (多 phase union)
         run: |
           pip install -q --break-system-packages pathlib
-          PHASE=${{ steps.phase.outputs.phase }}
+          PHASES=${{ steps.phase.outputs.phases }}
           FAIL=0
           while IFS= read -r f; do
             if [[ "$f" == *.py ]] || [[ "$f" == *.json ]] || [[ "$f" == *.md ]]; then
-              python scripts/artifact_semantic_validator.py "$f" --phase "$PHASE" || FAIL=1
+              python scripts/artifact_semantic_validator.py "$f" --phases "$PHASES" || FAIL=1
             fi
           done < changed_files.txt
           exit $FAIL
-      - name: Drift scan
+      - name: Drift scan (changed-only, PR 真正改動的新增行)
         run: |
-          python scripts/drift_scan.py --path . --fail-on-drift
+          python scripts/drift_scan.py --changed --base origin/main --fail-on-drift
