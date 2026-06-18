@@ -32,16 +32,32 @@ def classify(p: Path) -> AType:
     if s == ".md":               return AType.GOVERNANCE_DOC
     return AType.UNKNOWN
 
-def validate(filepath, phase):
+def validate(filepath, phases):
+    """gate-design 修正（ADR-0061）：phases 為 list（多 phase tag union）——合法混類 sync PR
+    宣告 [Phase0][Phase4] 即 union 允許 governance_doc+runtime_code，不再強制單一 phase。"""
+    if isinstance(phases, int):
+        phases = [phases]
     p = Path(filepath); at = classify(p)
-    allowed = PHASE_RULES.get(phase, list(AType))
+    allowed = set()
+    for ph in phases:
+        allowed |= set(PHASE_RULES.get(ph, list(AType)))
     if at not in allowed:
-        return False, f"SEMANTIC VIOLATION: {p.name} is {at.value}, Phase {phase} allows {[a.value for a in allowed]}"
+        return False, f"SEMANTIC VIOLATION: {p.name} is {at.value}, Phases {phases} allow {sorted(a.value for a in allowed)}"
     return True, f"OK: {p.name} -> {at.value}"
 
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("filepath"); ap.add_argument("--phase", type=int, required=True)
-    a = ap.parse_args(); ok, msg = validate(a.filepath, a.phase)
+    ap.add_argument("filepath")
+    # --phases 接逗號分隔多 phase（如 "0,4"）；保留 --phase 單值向後相容。
+    ap.add_argument("--phases", default=None)
+    ap.add_argument("--phase", type=int, default=None)
+    a = ap.parse_args()
+    if a.phases:
+        phases = [int(x) for x in a.phases.split(",") if x.strip() != ""]
+    elif a.phase is not None:
+        phases = [a.phase]
+    else:
+        phases = [4]
+    ok, msg = validate(a.filepath, phases)
     print(msg); sys.exit(0 if ok else 1)
