@@ -1,19 +1,20 @@
 # ── Prospera SYSTEM HEADER (ADR-0032/SBOM) ──
 # 性質:engineering ｜設計:Kevin 架構 ｜執行:AI 工具(claude.ai+Claude Code)
 # 驗證:無機制驗證 ｜IP:創造性歸 Kevin(發明人), AI 為執行工具 (ADR-0032)
-import sys
+"""STUB / placeholder —— 本檔不執行任何架構依賴驗證。
 
-ALLOWED_DEPENDENCIES = {
-    "Kernel": [],
-    "Engine": ["Kernel"],
-    "Registry": ["Engine"],
-    "Gateway": ["Registry"],
-    "Adoption": ["Gateway"]
-}
+歷史上此檔載入一份 ALLOWED_DEPENDENCIES 字典後即 print "passed"，
+從未解析任何模組 import、也未驗證任何跨 repo 依賴，屬「護欄劇場」。
+為誠實標註，現明確宣告為 stub。
 
-print("Architecture dependency rules loaded.")
+真正承載治理檢查的工具位於 scripts/：
+  - scripts/governance_check.py        集中式治理 producer（required check）
+  - scripts/actions_usage_lint.py      GitHub Actions 用量 lint
+  - scripts/artifact_semantic_validator.py  產出物語意驗證
+  - scripts/drift_scan.py              漂移掃描
 
-# In a full system this script would parse module imports
-# and verify cross-repository dependencies.
+退出碼固定 0（不擋 PR），因為本檔本身不做任何驗證。
+"""
 
-print("Architecture dependency check passed.")
+print("[STUB] check_architecture_dependencies.py —— 未執行任何驗證 (no validation performed)。")
+print("[STUB] 真正的治理檢查請見：scripts/governance_check.py, scripts/actions_usage_lint.py")

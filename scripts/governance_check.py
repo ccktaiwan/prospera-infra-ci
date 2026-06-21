@@ -21,6 +21,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Windows cp950 console 下 print emoji 會 UnicodeEncodeError，強制 stdout 為 utf-8。
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except AttributeError:
+    pass  # Python < 3.7 無 reconfigure；CI runner 為 ubuntu/python3 不受影響
+
 ROOT = Path(".")
 warnings: list[str] = []
 violations: list[str] = []

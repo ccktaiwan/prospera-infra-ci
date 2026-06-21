@@ -5,7 +5,16 @@ Type: A 服務型
 Date: 2026-06-20
 
 ## Unique Role in Ecosystem
-中央 CI 治理檢查——check_*.py（架構依賴/契約/registry）
+中央 CI 治理檢查的 SSOT。真正承載檢查的工具在 scripts/：
+- scripts/governance_check.py —— 集中式治理 producer，由各 repo 的
+  governance_check.yml 以 curl 取本檔執行（= branch protection required context）。
+- scripts/actions_usage_lint.py / artifact_semantic_validator.py / drift_scan.py
+  —— Actions 用量 lint、產出物語意驗證、漂移掃描。
+- templates/workflows/ 的可重用 workflow —— 全生態系引用入口。
+
+註：根目錄 check_*.py（check_api_contracts / check_architecture_dependencies /
+check_repository_registry）為 stub/占位，不執行實質驗證（check_repository_registry
+僅做 registry JSON 合法性檢查），勿視為治理保證來源。
 
 ## Tenant Model
 非租戶
