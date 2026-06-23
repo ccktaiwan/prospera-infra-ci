@@ -22,7 +22,7 @@ import sys
 import pathlib
 import re
 
-CONSULTING_ROOT = pathlib.Path(r"C:\AI_WorkDir\GitHub\prospera-product-consulting")
+CONSULTING_ROOT = pathlib.Path(r"C:\AI_WorkDir\GitHub\prospera-product-genconsult")
 GATEWAY_ROOT    = pathlib.Path(r"C:\AI_WorkDir\GitHub\prospera-api-gateway")
 
 results = []
