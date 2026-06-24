@@ -24,11 +24,11 @@ jobs:
     steps:
       # 呼叫端 repo（要被掃描的 workflows）→ 取到 ./ 的 .github/workflows
       - name: Checkout caller repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # infra-ci（lint 腳本所在）→ 取到 .lint-infra/
       - name: Checkout infra-ci (lint script)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ccktaiwan/prospera-infra-ci
           ref: main
