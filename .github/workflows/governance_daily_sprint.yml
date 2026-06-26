@@ -67,7 +67,7 @@ jobs:
 
       - name: Send completion notification
         continue-on-error: true
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v18
         if: always()
         with:
           server_address: smtp.gmail.com
