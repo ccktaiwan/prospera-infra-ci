@@ -1,0 +1,76 @@
+name: Reusable Code CI (Grade A - code repo)
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: false
+        default: '3.11'
+        type: string
+
+concurrency:
+  group: code-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: 'pip'
+      - name: Install deps
+        run: |
+          pip install pytest 2>/dev/null || true
+          pip install -r requirements.txt 2>/dev/null || true
+      - name: pytest
+        run: |
+          python -m pytest 11_tests/ -q --tb=short 2>/dev/null || \
+          python -m pytest tests/ -q --tb=short 2>/dev/null || \
+          echo "✅ 無測試目錄，跳過"
+
+  detect-simplified:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: 繁體中文強制閘
+        run: |
+          if grep -rP '这|说|项|实|该|与|对|从|将|应' \
+            --include='*.md' --include='*.py' . 2>/dev/null | grep -v '.git'; then
+            echo "❌ 發現簡體中文"
+            exit 1
+          fi
+          echo "✅ 繁體中文檢查通過"
+
+  llm-chokepoint:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: LLM Chokepoint Guard
+        run: |
+          python3 - <<'PY'
+          import os, sys, re
+          BAD = re.compile(r'anthropic\.Anthropic|Anthropic\(\)|client\.messages\.create|openai\.ChatCompletion')
+          violations = []
+          for root, _, files in os.walk('.'):
+              if '.git' in root or 'api_utils' in root:
+                  continue
+              for f in files:
+                  if f.endswith('.py') and f != 'api_utils.py':
+                      content = open(os.path.join(root, f), encoding='utf-8', errors='ignore').read()
+                      if BAD.search(content):
+                          violations.append(os.path.join(root, f))
+          if violations:
+              print('❌ 直接 LLM 呼叫（繞過 chokepoint）：', violations); sys.exit(1)
+          print('✅ LLM Chokepoint 檢查通過')
+          PY

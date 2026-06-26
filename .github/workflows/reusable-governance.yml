@@ -1,0 +1,39 @@
+name: Reusable Governance Check (Grade B - 治理 repo)
+on:
+  workflow_call:
+
+concurrency:
+  group: governance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  governance-check:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: 繁體中文強制閘
+        run: |
+          if grep -rP '这|说|项|实|该|与|对|从|将|应' \
+            --include='*.md' . 2>/dev/null | grep -v '.git'; then
+            echo "❌ 發現簡體中文"
+            exit 1
+          fi
+          echo "✅ 繁體中文檢查通過"
+      - name: PENDING 格式閘（WARN）
+        run: |
+          python3 - <<'PY'
+          import os, re
+          issues = []
+          for root, _, files in os.walk('.'):
+              if '.git' in root:
+                  continue
+              for f in files:
+                  if f.endswith('.md'):
+                      content = open(os.path.join(root, f), encoding='utf-8', errors='ignore').read()
+                      if 'PENDING-' in content and re.search(r'PENDING-(?!\d{3})', content):
+                          issues.append(f)
+          print('⚠️ PENDING 格式警告：', issues) if issues else print('✅ PENDING 格式檢查通過')
+          PY

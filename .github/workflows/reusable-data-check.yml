@@ -1,0 +1,24 @@
+name: Reusable Data Quality Check (Grade C - 資料 repo)
+on:
+  workflow_call:
+
+concurrency:
+  group: data-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-simplified:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: 繁體中文強制閘
+        run: |
+          if grep -rP '这|说|项|实|该|与|对|从|将|应|这' \
+            --include='*.md' . 2>/dev/null | grep -v '.git'; then
+            echo "❌ 發現簡體中文"
+            exit 1
+          fi
+          echo "✅ 繁體中文檢查通過"
